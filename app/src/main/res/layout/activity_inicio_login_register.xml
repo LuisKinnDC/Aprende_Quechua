@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_inicio_register_login"
+    tools:context=".activitys.InicioLoginRegisterActivity">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnEntrar"
+        style="@android:style/Widget.Button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/bg_boton"
+        android:text="Iniciar Sesion"
+        android:textColor="@color/color_50"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCrear"
+        style="@android:style/Widget.Button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/bg_boton"
+        android:text="Crear Cuenta"
+        android:textColor="@color/color_50"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEntrar" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="224dp"
+        android:layout_height="501dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_ic" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-150dp"
+        android:text="ALLIN YACHAY"
+        android:textAlignment="center"
+        android:textColor="@color/color_50"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <ImageView
+        android:id="@+id/imgCircle1"
+        android:layout_width="433dp"
+        android:layout_height="425dp"
+        android:layout_marginTop="-200dp"
+        android:layout_marginEnd="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/circle_efect" />
+
+    <ImageView
+        android:id="@+id/imgCircle2"
+        android:layout_width="433dp"
+        android:layout_height="425dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="-200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/circle_efect" />
+
+    <ImageView
+        android:id="@+id/imgCircle3"
+        android:layout_width="522dp"
+        android:layout_height="523dp"
+        android:layout_marginBottom="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/circle_efect" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

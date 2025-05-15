@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Allin Yachay</string>
+    <string name="default_web_client_id">213829955142-obc6bc7mlek1177ka5o1pd77ba5ah9ie.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="module_icon" />
+
+    <string-array name="generos">
+        <item>Selecciona tu género</item>
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Otro</item>
+    </string-array>
+</resources>

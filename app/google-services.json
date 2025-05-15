@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "213829955142",
+    "project_id": "appquechua-e723d",
+    "storage_bucket": "appquechua-e723d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213829955142:android:5e5b0959cb9f6adaf5e447",
+        "android_client_info": {
+          "package_name": "com.app.aprendequechua"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213829955142-obc6bc7mlek1177ka5o1pd77ba5ah9ie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.aprendequechua",
+            "certificate_hash": "a573cb1118337737a885289db92f15da3b9d5e19"
+          }
+        },
+        {
+          "client_id": "213829955142-opvvs44ranb4ugngc7qruj5o5hlc8su7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRPKG5owUZmiXLiyMD6C6GQa_42hiSaQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213829955142-opvvs44ranb4ugngc7qruj5o5hlc8su7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

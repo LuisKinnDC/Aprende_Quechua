@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.InicioFragment"
+    android:background="@color/color_100">
+
+    <!-- Fondo superior -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/bg_top_perfil">
+
+        <!-- Saludo -->
+        <TextView
+            android:id="@+id/txtSaludo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="52dp"
+            android:text="Hola, Buenos días!"
+            android:textColor="@color/color_50"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Nombre del usuario -->
+        <TextView
+            android:id="@+id/txtNombreUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text=""
+            android:textColor="@color/color_50"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtSaludo" />
+
+        <!-- Imagen de perfil -->
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="32dp"
+            android:src="@drawable/ic_defect_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/blanco_arriba_boton"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp">
+
+        <!-- Sección "BÁSICO" -->
+        <LinearLayout
+            android:id="@+id/layoutBasico"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/arriba_botones"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/imgBasico"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_essential" />
+
+            <TextView
+                android:id="@+id/txtBasico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Básico"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Espacio entre secciones -->
+        <View
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+
+        <!-- Sección "INTERMEDIO" -->
+        <LinearLayout
+            android:id="@+id/layoutIntermedio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/arriba_botones"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/imgIntermedio"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_intermediate" />
+
+            <TextView
+                android:id="@+id/txtIntermedio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Intermedio"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Espacio entre secciones -->
+        <View
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+
+        <!-- Sección "AVANZADO" -->
+        <LinearLayout
+            android:id="@+id/layoutAvanzado"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/arriba_botones"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/imgAvanzado"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_advanced" />
+
+            <TextView
+                android:id="@+id/txtAvanzado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Avanzado"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="340dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/bg_info_nivel"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+
+        <!-- Contenedor vertical para texto -->
+        <ImageView
+            android:id="@+id/imageViewNivel"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_advanced" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <!-- Texto del nivel -->
+            <TextView
+                android:id="@+id/txtNivel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nivel Actual: BÁSICO"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Barra de progreso -->
+            <ProgressBar
+                android:id="@+id/progressBarProgreso"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="8dp"
+                android:progress="50"
+                android:progressBackgroundTint="@color/color_50" />
+
+            <!-- Texto del progreso -->
+            <TextView
+                android:id="@+id/txtProgreso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progreso está al 50%"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutBotones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:padding="16dp">
+
+        <!-- Contenedor Principal Horizontal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Botón 1: Diccionario -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <!-- Fondo Blanco para el Ícono -->
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/blanco_arriba_boton"> <!-- Fondo blanco redondeado -->
+
+                    <!-- Ícono -->
+                    <ImageView
+                        android:id="@+id/imgBook"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_book" />
+                </FrameLayout>
+
+                <!-- Texto del Botón -->
+                <TextView
+                    android:id="@+id/txtDiccionario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Diccionario"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Espaciador entre Botones
+            <View
+                android:layout_width="4dp"
+                android:layout_height="match_parent" /> -->
+
+            <!-- Botón 2: Pronunciación -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <!-- Fondo Blanco para el Ícono -->
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/blanco_arriba_boton"> <!-- Fondo blanco redondeado -->
+
+                    <!-- Ícono -->
+                    <ImageView
+                        android:id="@+id/imgAudio"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_audio" />
+                </FrameLayout>
+
+                <!-- Texto del Botón -->
+                <TextView
+                    android:id="@+id/txtPronunciacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Pronunciación"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <!-- Fondo Blanco para el Ícono -->
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/blanco_arriba_boton"> <!-- Fondo blanco redondeado -->
+
+                    <!-- Ícono -->
+                    <ImageView
+                        android:id="@+id/imgCuentos"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_book_open" />
+                </FrameLayout>
+
+                <!-- Texto del Botón -->
+                <TextView
+                    android:id="@+id/txtCuentos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Cuentos"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

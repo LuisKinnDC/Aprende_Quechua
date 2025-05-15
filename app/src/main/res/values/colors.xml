@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FFC62828</color>
+    <color name="gray">#FF9E9E9E</color>
+
+
+    //Paleta color app
+    <color name="color_50">#f2fbfa</color>
+    <color name="color_100">#d3f4f1</color>
+    <color name="color_200">#a7e8e4</color>
+    <color name="color_300">#72d6d2</color>
+    <color name="color_400">#45bcbb</color>
+    <color name="color_500">#2c9fa0</color>
+    <color name="color_600">#217d80</color>
+    <color name="color_700">#1e6467</color>
+    <color name="color_800">#1d5255</color>
+    <color name="color_900">#1c4245</color>
+    <color name="color_950">#0a2629</color>
+
+</resources>
