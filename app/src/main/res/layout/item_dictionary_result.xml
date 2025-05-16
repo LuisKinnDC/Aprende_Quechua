@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="32dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Palabra original -->
+    <TextView
+        android:id="@+id/txtOriginalWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Runa"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+    <!-- Traducción -->
+    <TextView
+        android:id="@+id/txtTranslation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Persona"
+        android:textSize="16sp"
+        android:textColor="@color/color_600"
+        android:layout_marginTop="4dp" />
+
+    <!-- Ejemplo de uso -->
+    <TextView
+        android:id="@+id/txtExample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Runa simi kaqtaqa, allinmi."
+        android:textSize="14sp"
+        android:textColor="@color/color_500"
+        android:layout_marginTop="4dp" />
+
+    <!-- Botón de audio -->
+    <ImageButton
+        android:id="@+id/btnAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_audio"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Escuchar pronunciación"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.app.aprendequechua.R
@@ -12,15 +14,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
+import androidx.fragment.app.FragmentTransaction
+
 class InicioFragment : Fragment() {
 
     private lateinit var textViewSaludo: TextView
     private lateinit var textViewNombreUsuario: TextView
+    private lateinit var layoutDiccionario: FrameLayout
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,12 +39,16 @@ class InicioFragment : Fragment() {
         // Referencias a las vistas
         textViewSaludo = view.findViewById(R.id.txtSaludo)
         textViewNombreUsuario = view.findViewById(R.id.txtNombreUsuario)
+        layoutDiccionario = view.findViewById(R.id.layoutDiccionario)
 
         // Configurar el nombre del usuario autenticado
         setupUserName()
 
         // Configurar el saludo dinámico
         setupDynamicGreeting()
+
+        // Configurar el clic en el ícono del diccionario
+        setupDictionaryClickListener()
 
         return view
     }
@@ -94,5 +102,17 @@ class InicioFragment : Fragment() {
         textViewSaludo.text = greeting
     }
 
+    // Configurar el clic en el ícono del diccionario
+    private fun setupDictionaryClickListener() {
+        layoutDiccionario.setOnClickListener {
+            // Crear una instancia del fragmento de diccionario
+            val diccionarioFragment = DiccionarioFragment()
 
+            // Realizar la transición al fragmento de diccionario
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, diccionarioFragment) // Reemplaza el contenedor principal
+                .addToBackStack(null) // Agrega la transacción al back stack
+                .commit()
+        }
+    }
 }

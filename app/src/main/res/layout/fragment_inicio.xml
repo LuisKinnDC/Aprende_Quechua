@@ -248,6 +248,7 @@
 
                 <!-- Fondo Blanco para el Ícono -->
                 <FrameLayout
+                    android:id="@+id/layoutDiccionario"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:background="@drawable/blanco_arriba_boton"> <!-- Fondo blanco redondeado -->
