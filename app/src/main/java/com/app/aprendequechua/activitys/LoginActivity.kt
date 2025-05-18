@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -52,35 +53,49 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupLoginButtons() {
-        // Referencias a los campos de entrada
+        val inputLayoutEmail = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.textInputLayoutEmail)
+        val inputLayoutPassword = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.textInputLayoutContraseña)
         val editTextEmail = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editTxtName)
         val editTextPassword = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editTxtContrasena)
 
-        // Botón "Iniciar Sesión" con correo y contraseña
         val buttonIniciarSesion = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.buttonIniciarSesion)
         buttonIniciarSesion.setOnClickListener {
             val email = editTextEmail.text.toString().trim()
             val password = editTextPassword.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            // Resetear errores
+            inputLayoutEmail.error = null
+            inputLayoutPassword.error = null
+
+            var isValid = true
+
+            if (email.isEmpty()) {
+                inputLayoutEmail.error = "Este campo es obligatorio"
+                isValid = false
+            } else if (!isValidEmail(email)) {
+                inputLayoutEmail.error = "Correo inválido"
+                isValid = false
             }
 
-            if (!isValidEmail(email)) {
-                Toast.makeText(this, "Por favor, ingresa un correo válido", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (password.isEmpty()) {
+                inputLayoutPassword.error = "Este campo es obligatorio"
+                isValid = false
+            } else if (password.length < 6) {
+                inputLayoutPassword.error = "Mínimo 6 caracteres"
+                isValid = false
             }
+
+            if (!isValid) return@setOnClickListener
 
             signInWithEmail(email, password)
         }
 
-        // Botón "Iniciar con Google"
         val layoutIniciarGoogle = findViewById<LinearLayout>(R.id.layoutIniciarGoogle)
         layoutIniciarGoogle.setOnClickListener {
             signInWithGoogle()
         }
     }
+
 
     private fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -90,15 +105,14 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Log.d("AuthDebug", "Inicio de sesión exitoso")
-                    Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
                     redirectToDashboard()
                 } else {
-                    Log.e("AuthDebug", "Error al iniciar sesión: ${task.exception?.message}")
-                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("AuthDebug", "Error al iniciar sesión", task.exception)
+                    showErrorDialog("Error de autenticación", task.exception?.localizedMessage ?: "Inténtalo de nuevo más tarde.")
                 }
             }
     }
+
 
     private fun signInWithGoogle() {
         // Configurar Google Sign-In
@@ -186,6 +200,29 @@ class LoginActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
     }
+    private fun showErrorDialog(title: String, message: String) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_error, null)
+
+        val tvTitle = dialogView.findViewById<TextView>(R.id.tvDialogTitle)
+        val tvMessage = dialogView.findViewById<TextView>(R.id.tvDialogMessage)
+        val btnAccept = dialogView.findViewById<Button>(R.id.btnDialogAccept)
+
+        tvTitle.text = title
+        tvMessage.text = message
+
+        val dialog = android.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        btnAccept.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+
 
     private fun sendPasswordResetEmail(email: String) {
         auth.sendPasswordResetEmail(email)

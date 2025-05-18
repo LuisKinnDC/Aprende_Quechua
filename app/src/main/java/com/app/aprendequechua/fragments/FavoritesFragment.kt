@@ -1,9 +1,11 @@
 package com.app.aprendequechua.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +36,16 @@ class FavoritesFragment : Fragment() {
 
         // Referencias a las vistas
         val recyclerFavorites = view.findViewById<RecyclerView>(R.id.recyclerFavorites)
+        val layoutVolver = view.findViewById<LinearLayout>(R.id.layoutVolver)
+
+        layoutVolver.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, DiccionarioFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+
 
         // Configurar RecyclerView
         adapter = DictionaryAdapter(
@@ -98,14 +110,14 @@ class FavoritesFragment : Fragment() {
             ).addOnSuccessListener {
                 palabra.isFavorite = true
                 adapter.notifyDataSetChanged()
-                Toast.makeText(requireContext(), "Agregaste a Favoritos esta palabra", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "${palabra.palabraQuechua} agregado a Favoritos", Toast.LENGTH_SHORT).show()
             }
         } else {
             // Eliminar de favoritos
             favoritosRef.delete().addOnSuccessListener {
                 palabra.isFavorite = false
                 adapter.notifyDataSetChanged()
-                Toast.makeText(requireContext(), "Eliminaste esta palabra de Favoritos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "${palabra.palabraQuechua} eliminado de Favoritos", Toast.LENGTH_SHORT).show()
             }
         }
     }

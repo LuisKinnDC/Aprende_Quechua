@@ -78,21 +78,37 @@ class DiccionarioFragment : Fragment() {
     }
 
     private fun filterWords(query: String) {
-        db.collection("palabras")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        // Obtener favoritos del usuario
+        db.collection("favoritos")
+            .whereEqualTo("userId", userId)
             .get()
-            .addOnSuccessListener { snapshot ->
-                val palabrasFiltradas = snapshot.documents.mapNotNull { it.toObject(Palabra::class.java) }
-                    .filter {
-                        it.palabraQuechuaLower.contains(query.lowercase()) ||
-                                it.significado.lowercase().contains(query.lowercase())
+            .addOnSuccessListener { favoritosSnapshot ->
+                val favoritosIds = favoritosSnapshot.documents.mapNotNull { it.getString("palabraId") }
+
+                // Luego obtener todas las palabras
+                db.collection("palabras")
+                    .get()
+                    .addOnSuccessListener { snapshot ->
+                        val palabrasFiltradas = snapshot.documents.mapNotNull { it.toObject(Palabra::class.java) }
+                            .filter {
+                                it.palabraQuechuaLower.contains(query.lowercase()) ||
+                                        it.significado.lowercase().contains(query.lowercase())
+                            }
+                            .map { palabra ->
+                                palabra.isFavorite = favoritosIds.contains(palabra.palabraQuechuaLower)
+                                palabra
+                            }
+
+                        adapter.submitList(palabrasFiltradas)
                     }
-                adapter.submitList(palabrasFiltradas)
-            }
-            .addOnFailureListener {
-                // Manejar error si deseas
-                adapter.submitList(emptyList())
+                    .addOnFailureListener {
+                        adapter.submitList(emptyList())
+                    }
             }
     }
+
 
     private fun toggleFavorite(palabra: Palabra, isFavorite: Boolean) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
@@ -113,14 +129,14 @@ class DiccionarioFragment : Fragment() {
             ).addOnSuccessListener {
                 palabra.isFavorite = true
                 adapter.notifyDataSetChanged()
-                Toast.makeText(requireContext(), "Agregaste a Favoritos esta palabra", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "${palabra.palabraQuechua} agregado a Favoritos", Toast.LENGTH_SHORT).show()
             }
         } else {
             // Eliminar de favoritos
             favoritosRef.delete().addOnSuccessListener {
                 palabra.isFavorite = false
                 adapter.notifyDataSetChanged()
-                Toast.makeText(requireContext(), "Eliminaste esta palabra de Favoritos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "${palabra.palabraQuechua} eliminado de Favoritos", Toast.LENGTH_SHORT).show()
             }
         }
     }

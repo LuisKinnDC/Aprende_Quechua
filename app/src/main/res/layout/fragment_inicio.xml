@@ -228,12 +228,15 @@
         android:layout_marginTop="500dp"
         android:padding="16dp">
 
-        <!-- Contenedor Principal Horizontal -->
-        <LinearLayout
+        <!-- GridLayout con 3 columnas y 2 filas -->
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:columnCount="3"
             android:orientation="horizontal"
-            android:gravity="center"
+            android:alignmentMode="alignMargins"
+            android:rowCount="2"
+            android:useDefaultMargins="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -242,18 +245,16 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <!-- Fondo Blanco para el Ícono -->
                 <FrameLayout
                     android:id="@+id/layoutDiccionario"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton"> <!-- Fondo blanco redondeado -->
+                    android:background="@drawable/blanco_arriba_boton">
 
-                    <!-- Ícono -->
                     <ImageView
                         android:id="@+id/imgBook"
                         android:layout_width="48dp"
@@ -262,7 +263,6 @@
                         android:src="@drawable/ic_book" />
                 </FrameLayout>
 
-                <!-- Texto del Botón -->
                 <TextView
                     android:id="@+id/txtDiccionario"
                     android:layout_width="wrap_content"
@@ -274,35 +274,27 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Espaciador entre Botones
-            <View
-                android:layout_width="4dp"
-                android:layout_height="match_parent" /> -->
-
             <!-- Botón 2: Pronunciación -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <!-- Fondo Blanco para el Ícono -->
                 <FrameLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton"> <!-- Fondo blanco redondeado -->
+                    android:background="@drawable/blanco_arriba_boton">
 
-                    <!-- Ícono -->
                     <ImageView
                         android:id="@+id/imgAudio"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_audio" />
+                        android:src="@drawable/ic_audio_book" />
                 </FrameLayout>
 
-                <!-- Texto del Botón -->
                 <TextView
                     android:id="@+id/txtPronunciacion"
                     android:layout_width="wrap_content"
@@ -314,20 +306,19 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <!-- Botón 3: Cuentos -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <!-- Fondo Blanco para el Ícono -->
                 <FrameLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton"> <!-- Fondo blanco redondeado -->
+                    android:background="@drawable/blanco_arriba_boton">
 
-                    <!-- Ícono -->
                     <ImageView
                         android:id="@+id/imgCuentos"
                         android:layout_width="48dp"
@@ -336,7 +327,6 @@
                         android:src="@drawable/ic_book_open" />
                 </FrameLayout>
 
-                <!-- Texto del Botón -->
                 <TextView
                     android:id="@+id/txtCuentos"
                     android:layout_width="wrap_content"
@@ -347,7 +337,102 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
-        </LinearLayout>
+
+            <!-- Botón 4: Adivinanzas -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:id="@+id/layoutAdivinanza"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/blanco_arriba_boton">
+
+                    <ImageView
+                        android:id="@+id/imgBookAdivinanza"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_adivinza" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/txtAdivinaza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Adivinzas"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Botón 5: (Ejemplo Extra) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/blanco_arriba_boton">
+
+                    <ImageView
+                        android:id="@+id/imgExtra1"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/txtExtra1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Extra 1"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Botón 6: (Ejemplo Extra) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/blanco_arriba_boton">
+
+                    <ImageView
+                        android:id="@+id/imgExtra2"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/txtExtra2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Extra 2"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

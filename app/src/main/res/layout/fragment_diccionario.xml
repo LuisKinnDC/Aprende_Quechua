@@ -7,13 +7,27 @@
     tools:context=".fragments.DiccionarioFragment"
     android:background="@color/color_100">
 
+    <!-- Título principal -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mi Diccionario"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_950"
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:padding="8dp"
+        />
+
     <!-- Barra de búsqueda -->
     <LinearLayout
         android:id="@+id/searchBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_100"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="70dp"
         android:elevation="4dp"
         android:orientation="horizontal"
         android:padding="16dp">
@@ -47,8 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_star_filled"
+        android:src="@drawable/ic_favorite_white"
         android:backgroundTint="@color/color_600"
+        app:tint="@null"
         android:contentDescription="Favoritos" />
+
 
 </FrameLayout>
