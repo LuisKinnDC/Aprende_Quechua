@@ -38,38 +38,28 @@ class PerfilFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_perfil, container, false)
 
-        // Inicializa Firebase Auth y Firestore
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Verificar si el usuario ya está autenticado
         val currentUser = auth.currentUser
         if (currentUser == null) {
-            Log.d("AuthDebug", "No hay usuario autenticado")
             redirectToLogin()
             return view
-        } else {
-            Log.d("AuthDebug", "Usuario autenticado: ${currentUser.uid}")
         }
 
-        // Agregar listener para manejar tokens expirados
         auth.addAuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user == null) {
                 redirectToLogin()
             } else {
                 user.getIdToken(true).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("AuthDebug", "Token renovado: ${task.result?.token}")
-                    } else {
-                        Log.e("AuthDebug", "Error al renovar el token: ${task.exception?.message}")
+                    if (!task.isSuccessful) {
                         Toast.makeText(requireContext(), "Error al renovar el token", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
 
-        // Obtener referencias a las vistas
         txtNameProfile = view.findViewById(R.id.txtNameProfile)
         emailProfile = view.findViewById(R.id.emailProfile)
         txtProvider = view.findViewById(R.id.textView13)
@@ -79,28 +69,13 @@ class PerfilFragment : Fragment() {
         imgEdit = view.findViewById(R.id.imgEdit)
         imgDelete = view.findViewById(R.id.imgDelete)
 
-        // Configurar el perfil del usuario desde Firebase Auth
         setupUserProfile()
-
-        // Cargar los datos adicionales del perfil desde Firestore
         loadUserProfile()
 
-        // Configurar el botón de cerrar sesión
-        btnCerrarSesion.setOnClickListener {
-            showLogoutConfirmationDialog()
-        }
+        btnCerrarSesion.setOnClickListener { showLogoutConfirmationDialog() }
+        imgEdit.setOnClickListener { showEditProfileDialog() }
+        imgDelete.setOnClickListener { deleteAccount() }
 
-        // Configurar el botón de edición
-        imgEdit.setOnClickListener {
-            showEditProfileDialog()
-        }
-
-        // Configurar el ícono de borrar cuenta
-        imgDelete.setOnClickListener {
-            deleteAccount()
-        }
-
-        // Configurar el clic en el campo de cumpleaños para abrir el DatePickerDialog
         txtFechaCumple.setOnClickListener {
             showDatePickerDialog(txtFechaCumple)
         }
@@ -115,87 +90,56 @@ class PerfilFragment : Fragment() {
     }
 
     private fun setupUserProfile() {
-        // Verificar si el reloj del dispositivo está desfasado
         val currentTime = System.currentTimeMillis()
-        if (currentTime < 1700000000000L) { // Ejemplo de fecha futura
+        if (currentTime < 1700000000000L) {
             Toast.makeText(requireContext(), "Por favor, ajusta la hora de tu dispositivo", Toast.LENGTH_LONG).show()
             return
         }
 
-        val user = auth.currentUser
-        if (user != null) {
-            // Recuperar el nombre del usuario
-            var displayName = user.displayName ?: "Usuario"
-            for (profile in user.providerData) {
-                displayName = profile.displayName ?: displayName
-                if (displayName != "Usuario") break
-            }
-            txtNameProfile.text = displayName
-
-            // Recuperar el correo electrónico del usuario
-            val email = user.email ?: "Correo no disponible"
-            emailProfile.text = email
-
-            // Determinar el proveedor de inicio de sesión
-            var provider = "OTRO"
-            for (profile in user.providerData) {
-                when (profile.providerId) {
-                    "google.com" -> {
-                        provider = "GOOGLE"
-                        break
-                    }
-                    "facebook.com" -> {
-                        provider = "FACEBOOK"
-                        break
-                    }
-                    "password" -> {
-                        provider = "EMAIL"
-                        break
-                    }
-                }
-            }
-            txtProvider.text = provider
-        } else {
-            redirectToLogin()
+        val user = auth.currentUser ?: return redirectToLogin()
+        var displayName = user.displayName ?: "Usuario"
+        for (profile in user.providerData) {
+            displayName = profile.displayName ?: displayName
+            if (displayName != "Usuario") break
         }
+        txtNameProfile.text = displayName
+        emailProfile.text = user.email ?: "Correo no disponible"
+
+        var provider = "OTRO"
+        for (profile in user.providerData) {
+            provider = when (profile.providerId) {
+                "google.com" -> "GOOGLE"
+                "facebook.com" -> "FACEBOOK"
+                "password" -> "EMAIL"
+                else -> provider
+            }
+        }
+        txtProvider.text = provider
     }
 
     private fun loadUserProfile() {
-        val user = auth.currentUser
-        if (user != null) {
-            // Forzar la renovación del token antes de cargar los datos
-            user.getIdToken(true).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val userId = user.uid
-                    db.collection("usuarios").document(userId)
-                        .get()
-                        .addOnSuccessListener { document ->
-                            if (document.exists()) {
-                                val nombre = document.getString("nombre") ?: "Nombre no disponible"
-                                val email = document.getString("email") ?: "Correo no disponible"
-                                val genero = document.getString("genero") ?: "Género no disponible"
-                                val cumpleaños = document.getString("cumpleaños") ?: "Cumpleaños no disponible"
-                                txtNameProfile.text = nombre
-                                emailProfile.text = email
-                                txtGenero.text = genero
-                                txtFechaCumple.text = cumpleaños
-                            } else {
-                                Log.d("FirestoreDebug", "Documento de usuario no encontrado en Firestore")
-                                Toast.makeText(requireContext(), "Datos no disponibles", Toast.LENGTH_SHORT).show()
-                            }
+        val user = auth.currentUser ?: return redirectToLogin()
+        user.getIdToken(true).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                db.collection("usuarios").document(user.uid)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            txtNameProfile.text = document.getString("nombre") ?: "Nombre no disponible"
+                            emailProfile.text = document.getString("email") ?: "Correo no disponible"
+                            txtGenero.text = document.getString("genero") ?: "Género no disponible"
+                            txtFechaCumple.text = document.getString("cumpleaños") ?: "Cumpleaños no disponible"
+                        } else {
+                            Toast.makeText(requireContext(), "Datos no disponibles", Toast.LENGTH_SHORT).show()
                         }
-                        .addOnFailureListener { exception ->
-                            Log.e("FirestoreDebug", "Error al cargar datos de Firestore: ${exception.message}")
-                            Toast.makeText(requireContext(), "Error al cargar datos", Toast.LENGTH_SHORT).show()
-                        }
-                } else {
-                    // Error al renovar el token, redirigir al login
-                    Toast.makeText(requireContext(), "Error al renovar el token", Toast.LENGTH_SHORT).show()
-                    redirectToLogin()
-                }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(requireContext(), "Error al cargar datos", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(requireContext(), "Error al renovar el token", Toast.LENGTH_SHORT).show()
+                redirectToLogin()
             }
-        } else {
-            redirectToLogin()
         }
     }
 
@@ -222,6 +166,12 @@ class PerfilFragment : Fragment() {
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGender.adapter = genderAdapter
 
+        val currentGender = txtGenero.text.toString()
+        val genderPosition = genderAdapter.getPosition(currentGender)
+        if (genderPosition >= 0) {
+            spinnerGender.setSelection(genderPosition)
+        }
+
         editTextBirthday.setOnClickListener {
             showDatePickerDialog(editTextBirthday)
         }
@@ -241,33 +191,49 @@ class PerfilFragment : Fragment() {
     }
 
     private fun saveEditedProfile(name: String, email: String, gender: String, birthday: String) {
-        if (name.isBlank() || email.isBlank() || gender.isBlank() || birthday.isBlank()) {
+        if (name.isBlank() || email.isBlank()) {
             Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val user = auth.currentUser
-        if (user != null) {
-            val updates = mapOf(
-                "nombre" to name,
-                "email" to email,
-                "genero" to gender,
-                "cumpleaños" to birthday
-            )
-
-            db.collection("usuarios").document(user.uid)
-                .update(updates)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show()
-                    txtNameProfile.text = name
-                    emailProfile.text = email
-                    txtGenero.text = gender
-                    txtFechaCumple.text = birthday
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Error al actualizar el perfil: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+        if (birthday.isBlank()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Campo obligatorio")
+                .setMessage("Por favor, selecciona tu fecha de cumpleaños.")
+                .setPositiveButton("OK", null)
+                .show()
+            return
         }
+
+        if (gender == "Seleccionar género") {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Campo obligatorio")
+                .setMessage("Por favor, selecciona un género válido.")
+                .setPositiveButton("OK", null)
+                .show()
+            return
+        }
+
+        val user = auth.currentUser ?: return
+        val updates = mapOf(
+            "nombre" to name,
+            "email" to email,
+            "genero" to gender,
+            "cumpleaños" to birthday
+        )
+
+        db.collection("usuarios").document(user.uid)
+            .update(updates)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show()
+                txtNameProfile.text = name
+                emailProfile.text = email
+                txtGenero.text = gender
+                txtFechaCumple.text = birthday
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Error al actualizar el perfil: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun showDatePickerDialog(textView: TextView) {
@@ -281,9 +247,7 @@ class PerfilFragment : Fragment() {
                 val formattedDate = "$selectedDay-${selectedMonth + 1}-$selectedYear"
                 textView.text = formattedDate
             },
-            year,
-            month,
-            day
+            year, month, day
         )
         datePickerDialog.show()
     }
@@ -300,41 +264,33 @@ class PerfilFragment : Fragment() {
                 redirectToLogin()
             }
         }
-        builder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss()
-        }
+        builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
         builder.create().show()
     }
 
     private fun deleteAccount() {
-        val user = auth.currentUser
-        if (user != null) {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Eliminar Cuenta")
-            builder.setMessage("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")
-            builder.setPositiveButton("Sí") { _, _ ->
-                db.collection("usuarios").document(user.uid)
-                    .delete()
-                    .addOnSuccessListener {
-                        user.delete()
-                            .addOnSuccessListener {
-                                Toast.makeText(requireContext(), "Cuenta eliminada correctamente", Toast.LENGTH_SHORT).show()
-                                redirectToLogin()
-                            }
-                            .addOnFailureListener { e ->
-                                Toast.makeText(requireContext(), "Error al eliminar la cuenta: ${e.message}", Toast.LENGTH_SHORT).show()
-                            }
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(requireContext(), "Error al eliminar los datos del usuario: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
-            }
-            builder.setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create().show()
-        } else {
-            redirectToLogin()
+        val user = auth.currentUser ?: return redirectToLogin()
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Eliminar Cuenta")
+        builder.setMessage("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")
+        builder.setPositiveButton("Sí") { _, _ ->
+            db.collection("usuarios").document(user.uid)
+                .delete()
+                .addOnSuccessListener {
+                    user.delete()
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Cuenta eliminada correctamente", Toast.LENGTH_SHORT).show()
+                            redirectToLogin()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(requireContext(), "Error al eliminar la cuenta: ${it.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Error al eliminar los datos del usuario: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
         }
+        builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+        builder.create().show()
     }
 }

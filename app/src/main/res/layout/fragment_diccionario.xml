@@ -8,14 +8,11 @@
     android:background="@color/color_100">
 
     <!-- Barra de búsqueda -->
-
-    <!-- Selector de idioma -->
-
     <LinearLayout
         android:id="@+id/searchBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/color_100"
         android:layout_marginTop="32dp"
         android:elevation="4dp"
         android:orientation="horizontal"
@@ -31,45 +28,7 @@
             android:padding="8dp"
             android:textColorHint="@color/color_500" />
 
-       <!-- <ImageButton
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginTop="10dp"
-            android:contentDescription="Buscar"
-            android:src="@drawable/ic_search" />-->
     </LinearLayout>
-
-    <!--<LinearLayout
-        android:id="@+id/languageSelectorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="8dp"
-        android:background="@color/white"
-        android:layout_marginTop="100dp"
-        android:elevation="4dp">
-
-        <Button
-            android:id="@+id/btnQuechuaToSpanish"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Quechua → Español"
-            android:backgroundTint="@color/color_700"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/btnSpanishToQuechua"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Español → Quechua"
-            android:backgroundTint="@color/color_700"
-            android:textColor="@color/white" />
-    </LinearLayout>-->
 
     <!-- Lista de resultados -->
     <androidx.recyclerview.widget.RecyclerView
@@ -83,12 +42,13 @@
 
     <!-- Botón de Favoritos -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabFavorites"
+        android:id="@+id/ListfabFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_star"
+        android:src="@drawable/ic_star_filled"
         android:backgroundTint="@color/color_600"
         android:contentDescription="Favoritos" />
+
 </FrameLayout>

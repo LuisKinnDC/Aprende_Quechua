@@ -1,49 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="32dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp"
-    android:background="?attr/selectableItemBackground">
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/blanco_arriba_boton"
+    android:gravity="center_vertical">
 
-    <!-- Palabra original -->
-    <TextView
-        android:id="@+id/txtOriginalWord"
-        android:layout_width="wrap_content"
+    <!-- Contenido principal (lado izquierdo) -->
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Runa"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black" />
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-    <!-- Traducción -->
-    <TextView
-        android:id="@+id/txtTranslation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Persona"
-        android:textSize="16sp"
-        android:textColor="@color/color_600"
-        android:layout_marginTop="4dp" />
+        <!-- Palabra original -->
+        <TextView
+            android:id="@+id/txtPalabraQuechua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Runa"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
 
-    <!-- Ejemplo de uso -->
-    <TextView
-        android:id="@+id/txtExample"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Runa simi kaqtaqa, allinmi."
-        android:textSize="14sp"
-        android:textColor="@color/color_500"
-        android:layout_marginTop="4dp" />
+        <!-- Traducción -->
+        <TextView
+            android:id="@+id/txtSignificado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Persona"
+            android:textSize="16sp"
+            android:textColor="@color/color_600"
+            android:layout_marginTop="4dp" />
 
-    <!-- Botón de audio -->
-    <ImageButton
-        android:id="@+id/btnAudio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_audio_book"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Escuchar pronunciación"
-        android:layout_marginTop="8dp" />
+        <!-- Ejemplo de uso -->
+        <TextView
+            android:id="@+id/txtEjemploQuechua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Runa simi kaqtaqa, allinmi."
+            android:textSize="14sp"
+            android:textColor="@color/color_500"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/txtEjemploEspanol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Este es el significado en español"
+            android:textSize="14sp"
+            android:textColor="@color/color_500"
+            android:layout_marginTop="4dp" />
+
+        <!-- Contenedor Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <!-- Botón de audio -->
+            <ImageButton
+                android:id="@+id/btnUrl_pronunciacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="270dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Escuchar pronunciación"
+                android:src="@drawable/ic_audio" />
+
+            <!-- Botón de favorito -->
+            <ImageButton
+                android:id="@+id/ImgBtnFav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Marcar como favorito"
+                app:srcCompat="@drawable/ic_star_outline" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

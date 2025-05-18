@@ -1,12 +1,9 @@
 package com.app.aprendequechua.fragments
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +14,7 @@ import com.app.aprendequechua.models.Palabra
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class DiccionarioFragment : Fragment() {
+class FavoritesFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: DictionaryAdapter
@@ -26,71 +23,59 @@ class DiccionarioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_diccionario, container, false)
+        return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inicializar Firebase
         db = FirebaseFirestore.getInstance()
 
-        val searchInput = view.findViewById<EditText>(R.id.searchInput)
-        val recyclerResults = view.findViewById<RecyclerView>(R.id.recyclerResults)
-        val ListfabFavorites = view.findViewById<View>(R.id.ListfabFavorites)
+        // Referencias a las vistas
+        val recyclerFavorites = view.findViewById<RecyclerView>(R.id.recyclerFavorites)
 
+        // Configurar RecyclerView
         adapter = DictionaryAdapter(
             palabras = emptyList(),
             onAudioClick = { urlPronunciacion ->
-                // Reproducir audio (pendiente implementar)
+                // Reproducir audio
             },
             onFavoriteClick = { palabra, isFavorite ->
                 toggleFavorite(palabra, isFavorite)
             }
         )
+        recyclerFavorites.layoutManager = LinearLayoutManager(requireContext())
+        recyclerFavorites.adapter = adapter
 
-        recyclerResults.layoutManager = LinearLayoutManager(requireContext())
-        recyclerResults.adapter = adapter
+        // Cargar palabras favoritas en tiempo real
+        loadFavoritesInRealTime()
+    }
 
-        // Configurar el botón flotante para navegar a la pantalla de favoritos
-        ListfabFavorites.setOnClickListener {
-            // Navegar a la pantalla de favoritos
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, FavoritesFragment())
-                .addToBackStack(null)
-                .commit()
-        }
+    private fun loadFavoritesInRealTime() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        // Búsqueda en tiempo real
-        searchInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        db.collection("favoritos")
+            .whereEqualTo("userId", userId)
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    // Manejar error
+                    return@addSnapshotListener
+                }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s.toString().trim()
-                if (query.isNotEmpty()) {
-                    filterWords(query)
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val palabras = mutableListOf<Palabra>()
+                    for (document in snapshot.documents) {
+                        val palabra = document.toObject(Palabra::class.java)
+                        palabra?.let {
+                            it.isFavorite = true
+                            palabras.add(it)
+                        }
+                    }
+                    adapter.submitList(palabras)
                 } else {
                     adapter.submitList(emptyList())
                 }
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-    }
-
-    private fun filterWords(query: String) {
-        db.collection("palabras")
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val palabrasFiltradas = snapshot.documents.mapNotNull { it.toObject(Palabra::class.java) }
-                    .filter {
-                        it.palabraQuechuaLower.contains(query.lowercase()) ||
-                                it.significado.lowercase().contains(query.lowercase())
-                    }
-                adapter.submitList(palabrasFiltradas)
-            }
-            .addOnFailureListener {
-                // Manejar error si deseas
-                adapter.submitList(emptyList())
             }
     }
 
