@@ -39,6 +39,11 @@ class LoginActivity : AppCompatActivity() {
         // Configurar los botones de inicio de sesión
         setupLoginButtons()
 
+        val linearLayoutIniciarFacebook = findViewById<LinearLayout>(R.id.linearLayoutIniciarFacebook)
+        linearLayoutIniciarFacebook.setOnClickListener {
+            Toast.makeText(this, "Iniaciar Sesion con Facebook aún no está implementada", Toast.LENGTH_SHORT).show()
+        }
+
         // Botón "Volver"
         val layoutVolver = findViewById<LinearLayout>(R.id.layoutVolver)
         layoutVolver.setOnClickListener {
@@ -221,8 +226,6 @@ class LoginActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
-
 
     private fun sendPasswordResetEmail(email: String) {
         auth.sendPasswordResetEmail(email)

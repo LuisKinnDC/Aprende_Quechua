@@ -109,7 +109,6 @@ class DiccionarioFragment : Fragment() {
             }
     }
 
-
     private fun toggleFavorite(palabra: Palabra, isFavorite: Boolean) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val favoritosRef = db.collection("favoritos").document("${userId}_${palabra.palabraQuechuaLower}")

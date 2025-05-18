@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.app.aprendequechua.R
 import com.app.aprendequechua.fragments.InicioFragment
 import com.app.aprendequechua.fragments.JuegosFragment
-import com.app.aprendequechua.fragments.LeccionesFragment
+import com.app.aprendequechua.fragments.NivelesFragment
 import com.app.aprendequechua.fragments.PerfilFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -32,7 +32,7 @@ class DashboardActivity : AppCompatActivity() {
                     true
                 }
                 R.id.leccionesFragment -> {
-                    loadFragment(LeccionesFragment())
+                    loadFragment(NivelesFragment())
                     true
                 }
                 R.id.juegosFragment -> {
