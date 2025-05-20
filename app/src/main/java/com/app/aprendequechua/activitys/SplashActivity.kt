@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import com.app.aprendequechua.R
 
@@ -12,10 +13,14 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Forzar modo claro
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         // Establecer el tema antes de llamar a super.onCreate
         setTheme(R.style.Theme_AprendeQuechua)
 
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
         // Inicializar Firebase Auth
         auth = FirebaseAuth.getInstance()

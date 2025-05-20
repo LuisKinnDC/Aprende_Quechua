@@ -1,10 +1,8 @@
 package com.app.aprendequechua.fragments
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +29,7 @@ class PerfilFragment : Fragment() {
     private lateinit var txtGenero: TextView
     private lateinit var imgEdit: ImageView
     private lateinit var imgDelete: ImageView
+    private lateinit var authListener: FirebaseAuth.AuthStateListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,18 +46,19 @@ class PerfilFragment : Fragment() {
             return view
         }
 
-        auth.addAuthStateListener { firebaseAuth ->
+        authListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user == null) {
                 redirectToLogin()
             } else {
                 user.getIdToken(true).addOnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Toast.makeText(requireContext(), "Error al renovar el token", Toast.LENGTH_SHORT).show()
+                    if (!task.isSuccessful && isAdded) {
+                        Toast.makeText(context, "Error al renovar el token", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
+        auth.addAuthStateListener(authListener)
 
         txtNameProfile = view.findViewById(R.id.txtNameProfile)
         emailProfile = view.findViewById(R.id.emailProfile)
@@ -83,16 +83,26 @@ class PerfilFragment : Fragment() {
         return view
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (::authListener.isInitialized) {
+            auth.removeAuthStateListener(authListener)
+        }
+    }
+
     private fun redirectToLogin() {
-        Toast.makeText(requireContext(), "Por favor, inicia sesión", Toast.LENGTH_SHORT).show()
-        startActivity(Intent(requireContext(), LoginActivity::class.java))
-        requireActivity().finish()
+        if (!isAdded) return
+        val context = context ?: return
+        Toast.makeText(context, "Por favor, inicia sesión", Toast.LENGTH_SHORT).show()
+        val intent = Intent(context, LoginActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
     }
 
     private fun setupUserProfile() {
         val currentTime = System.currentTimeMillis()
-        if (currentTime < 1700000000000L) {
-            Toast.makeText(requireContext(), "Por favor, ajusta la hora de tu dispositivo", Toast.LENGTH_LONG).show()
+        if (currentTime < 1700000000000L && isAdded) {
+            Toast.makeText(context, "Por favor, ajusta la hora de tu dispositivo", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -124,26 +134,33 @@ class PerfilFragment : Fragment() {
                 db.collection("usuarios").document(user.uid)
                     .get()
                     .addOnSuccessListener { document ->
+                        if (!isAdded) return@addOnSuccessListener
                         if (document.exists()) {
                             txtNameProfile.text = document.getString("nombre") ?: "Nombre no disponible"
                             emailProfile.text = document.getString("email") ?: "Correo no disponible"
                             txtGenero.text = document.getString("genero") ?: "Género no disponible"
                             txtFechaCumple.text = document.getString("cumpleaños") ?: "Cumpleaños no disponible"
                         } else {
-                            Toast.makeText(requireContext(), "Datos no disponibles", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Datos no disponibles", Toast.LENGTH_SHORT).show()
                         }
                     }
                     .addOnFailureListener {
-                        Toast.makeText(requireContext(), "Error al cargar datos", Toast.LENGTH_SHORT).show()
+                        if (isAdded) {
+                            Toast.makeText(context, "Error al cargar datos", Toast.LENGTH_SHORT).show()
+                        }
                     }
             } else {
-                Toast.makeText(requireContext(), "Error al renovar el token", Toast.LENGTH_SHORT).show()
-                redirectToLogin()
+                if (isAdded) {
+                    Toast.makeText(context, "Error al renovar el token", Toast.LENGTH_SHORT).show()
+                    redirectToLogin()
+                }
             }
         }
     }
 
     private fun showEditProfileDialog() {
+        if (!isAdded) return
+
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Editar Perfil")
         val view = layoutInflater.inflate(R.layout.dialog_edit_profile, null)
@@ -184,15 +201,13 @@ class PerfilFragment : Fragment() {
                 editTextBirthday.text.toString()
             )
         }
-        builder.setNegativeButton("Cancelar") { dialog, _ ->
-            dialog.dismiss()
-        }
+        builder.setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
         builder.create().show()
     }
 
     private fun saveEditedProfile(name: String, email: String, gender: String, birthday: String) {
         if (name.isBlank() || email.isBlank()) {
-            Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -225,14 +240,18 @@ class PerfilFragment : Fragment() {
         db.collection("usuarios").document(user.uid)
             .update(updates)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show()
-                txtNameProfile.text = name
-                emailProfile.text = email
-                txtGenero.text = gender
-                txtFechaCumple.text = birthday
+                if (isAdded) {
+                    Toast.makeText(context, "Perfil actualizado", Toast.LENGTH_SHORT).show()
+                    txtNameProfile.text = name
+                    emailProfile.text = email
+                    txtGenero.text = gender
+                    txtFechaCumple.text = birthday
+                }
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error al actualizar el perfil: ${it.message}", Toast.LENGTH_SHORT).show()
+                if (isAdded) {
+                    Toast.makeText(context, "Error al actualizar el perfil: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
             }
     }
 
@@ -253,6 +272,7 @@ class PerfilFragment : Fragment() {
     }
 
     private fun showLogoutConfirmationDialog() {
+        if (!isAdded) return
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Cerrar Sesión")
         builder.setMessage("¿Estás seguro de que deseas cerrar sesión?")
@@ -279,15 +299,15 @@ class PerfilFragment : Fragment() {
                 .addOnSuccessListener {
                     user.delete()
                         .addOnSuccessListener {
-                            Toast.makeText(requireContext(), "Cuenta eliminada correctamente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Cuenta eliminada correctamente", Toast.LENGTH_SHORT).show()
                             redirectToLogin()
                         }
                         .addOnFailureListener {
-                            Toast.makeText(requireContext(), "Error al eliminar la cuenta: ${it.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Error al eliminar la cuenta: ${it.message}", Toast.LENGTH_SHORT).show()
                         }
                 }
                 .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Error al eliminar los datos del usuario: ${it.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Error al eliminar los datos del usuario: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
         }
         builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
