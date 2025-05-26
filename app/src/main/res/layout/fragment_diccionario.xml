@@ -7,64 +7,77 @@
     tools:context=".fragments.DiccionarioFragment"
     android:background="@color/color_100">
 
-    <!-- Título principal -->
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mi Diccionario"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/color_950"
-        android:gravity="center"
-        android:layout_marginTop="32dp"
-        android:padding="8dp"
-        />
-
-    <!-- Barra de búsqueda -->
+    <!-- Main content container -->
     <LinearLayout
-        android:id="@+id/searchBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_100"
-        android:layout_marginTop="70dp"
-        android:elevation="4dp"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/searchInput"
-            android:layout_width="0dp"
+        <!-- App bar with title -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edit_txt_bg"
-            android:hint="Buscar palabra..."
-            android:padding="8dp"
-            android:textColorHint="@color/color_500" />
+            android:orientation="vertical"
+            android:background="@color/color_100"
+            android:elevation="4dp"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mi Diccionario"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/color_950"
+                android:gravity="center"/>
+
+            <!-- Search bar with improved styling -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchBarLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:boxStrokeColor="@color/color_600"
+                app:hintTextColor="@color/color_500"
+                app:endIconTint="@color/color_600">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Buscar palabra..."
+                    android:textColor="@color/color_950"
+                    android:textColorHint="@color/color_500"
+                    android:imeOptions="actionSearch"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- Results list with better spacing -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="72dp"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_dictionary_result"/>
 
     </LinearLayout>
 
-    <!-- Lista de resultados -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerResults"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="110dp"
-        android:padding="16dp"
-        android:scrollbars="vertical"
-        tools:listitem="@layout/item_dictionary_result" />
-
-    <!-- Botón de Favoritos -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!-- FAB with improved positioning and visual feedback -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/ListfabFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_favorite_white"
-        android:backgroundTint="@color/color_600"
-        app:tint="@null"
-        android:contentDescription="Favoritos" />
-
-
+        android:text="Favoritos"
+        android:textColor="@android:color/white"
+        android:icon="@drawable/ic_favorite_white"
+        app:backgroundTint="@color/color_600"
+        app:iconTint="@android:color/white"
+        app:extendStrategy="auto"/>
 </FrameLayout>

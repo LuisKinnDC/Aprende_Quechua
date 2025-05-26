@@ -1,37 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="24dp"
     android:background="@color/color_100"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvDialogTitle"
-        android:text="Título del error"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/color_600"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    <!-- Header with icon -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
 
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_error"
+            android:contentDescription="Error icon"
+            app:tint="@color/color_600" />
+
+        <TextView
+            android:id="@+id/tvDialogTitle"
+            android:text="Título del error"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_600"
+            android:layout_marginStart="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Message content -->
     <TextView
         android:id="@+id/tvDialogMessage"
-        android:text="Mensaje del error"
+        android:text="Mensaje del error detallado que explica la situación al usuario de manera clara y concisa."
         android:textSize="16sp"
-        android:textColor="#333333"
-        android:layout_marginTop="12dp"
+        android:textColor="@color/color_700"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnDialogAccept"
-        android:text="Aceptar"
-        android:textAllCaps="false"
-        android:background="@drawable/bg_boton"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="24dp"
+    <!-- Divider -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="1dp"
+        android:background="@color/color_200"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Action buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDialogAccept"
+            android:text="Aceptar"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/color_600"
+            app:cornerRadius="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            app:icon="@drawable/ic_check"
+            app:iconTint="@android:color/white"
+            app:iconGravity="end"
+            app:iconPadding="8dp"/>
+    </LinearLayout>
 
 </LinearLayout>

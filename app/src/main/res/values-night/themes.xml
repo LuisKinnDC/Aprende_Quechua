@@ -1,7 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AprendeQuechua" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Base.Theme.AprendeQuechua" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">#217D80</item> <!-- Color de la barra superior -->
+        <item name="colorPrimaryDark">#1A646B</item> <!-- Opcional: Color más oscuro para notificaciones -->
+        <item name="colorOnPrimary">@android:color/white</item>
     </style>
 </resources>

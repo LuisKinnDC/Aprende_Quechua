@@ -1,6 +1,6 @@
 package com.app.aprendequechua.fragments
 
-import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +20,7 @@ class FavoritesFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: DictionaryAdapter
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,22 +46,21 @@ class FavoritesFragment : Fragment() {
                 .commit()
         }
 
-
-
-        // Configurar RecyclerView
+        // Configurar RecyclerView y Adapter
         adapter = DictionaryAdapter(
             palabras = emptyList(),
             onAudioClick = { urlPronunciacion ->
-                // Reproducir audio
+                playAudioFromUrl(urlPronunciacion)
             },
             onFavoriteClick = { palabra, isFavorite ->
                 toggleFavorite(palabra, isFavorite)
             }
         )
+
         recyclerFavorites.layoutManager = LinearLayoutManager(requireContext())
         recyclerFavorites.adapter = adapter
 
-        // Cargar palabras favoritas en tiempo real
+        // Cargar favoritos en tiempo real
         loadFavoritesInRealTime()
     }
 
@@ -71,23 +71,17 @@ class FavoritesFragment : Fragment() {
             .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
-                    // Manejar error
+                    Toast.makeText(requireContext(), "Error al cargar favoritos", Toast.LENGTH_SHORT).show()
                     return@addSnapshotListener
                 }
 
-                if (snapshot != null && !snapshot.isEmpty) {
-                    val palabras = mutableListOf<Palabra>()
-                    for (document in snapshot.documents) {
-                        val palabra = document.toObject(Palabra::class.java)
-                        palabra?.let {
-                            it.isFavorite = true
-                            palabras.add(it)
-                        }
+                val palabras = snapshot?.documents?.mapNotNull { document ->
+                    document.toObject(Palabra::class.java)?.apply {
+                        isFavorite = true
                     }
-                    adapter.submitList(palabras)
-                } else {
-                    adapter.submitList(emptyList())
-                }
+                } ?: emptyList()
+
+                adapter.submitList(palabras)
             }
     }
 
@@ -120,6 +114,43 @@ class FavoritesFragment : Fragment() {
                 Toast.makeText(requireContext(), "${palabra.palabraQuechua} eliminado de Favoritos", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    // Reproducir audio desde URL pública
+    private fun playAudioFromUrl(audioUrl: String) {
+        releaseMediaPlayer()
+
+        mediaPlayer = MediaPlayer().apply {
+            try {
+                setDataSource(audioUrl)
+                prepareAsync()
+
+                setOnPreparedListener {
+                    start()
+                }
+
+                setOnCompletionListener {
+                    releaseMediaPlayer()
+                }
+
+                setOnErrorListener { mp, what, extra ->
+                    Toast.makeText(requireContext(), "Error al reproducir audio", Toast.LENGTH_SHORT).show()
+                    releaseMediaPlayer()
+                    true
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "No se pudo reproducir el audio", Toast.LENGTH_SHORT).show()
+                releaseMediaPlayer()
+            }
+        }
+    }
+
+    // Liberar recursos del MediaPlayer
+    private fun releaseMediaPlayer() {
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
 }

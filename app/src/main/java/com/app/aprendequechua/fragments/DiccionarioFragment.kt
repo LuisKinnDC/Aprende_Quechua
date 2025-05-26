@@ -1,5 +1,6 @@
 package com.app.aprendequechua.fragments
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +22,7 @@ class DiccionarioFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: DictionaryAdapter
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +40,11 @@ class DiccionarioFragment : Fragment() {
         val recyclerResults = view.findViewById<RecyclerView>(R.id.recyclerResults)
         val ListfabFavorites = view.findViewById<View>(R.id.ListfabFavorites)
 
+        // Inicializar el adaptador con callbacks
         adapter = DictionaryAdapter(
             palabras = emptyList(),
             onAudioClick = { urlPronunciacion ->
-                // Reproducir audio (pendiente implementar)
+                playAudioFromUrl(urlPronunciacion)
             },
             onFavoriteClick = { palabra, isFavorite ->
                 toggleFavorite(palabra, isFavorite)
@@ -53,7 +56,6 @@ class DiccionarioFragment : Fragment() {
 
         // Configurar el botón flotante para navegar a la pantalla de favoritos
         ListfabFavorites.setOnClickListener {
-            // Navegar a la pantalla de favoritos
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, FavoritesFragment())
                 .addToBackStack(null)
@@ -105,6 +107,7 @@ class DiccionarioFragment : Fragment() {
                     }
                     .addOnFailureListener {
                         adapter.submitList(emptyList())
+                        Toast.makeText(requireContext(), "Error al cargar palabras", Toast.LENGTH_SHORT).show()
                     }
             }
     }
@@ -138,6 +141,43 @@ class DiccionarioFragment : Fragment() {
                 Toast.makeText(requireContext(), "${palabra.palabraQuechua} eliminado de Favoritos", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    // Función para reproducir audio desde URL pública (GitHub Pages)
+    private fun playAudioFromUrl(audioUrl: String) {
+        releaseMediaPlayer() // Liberar si ya hay uno activo
+
+        mediaPlayer = MediaPlayer().apply {
+            try {
+                setDataSource(audioUrl)
+                prepareAsync()
+
+                setOnPreparedListener {
+                    start()
+                }
+
+                setOnCompletionListener {
+                    releaseMediaPlayer()
+                }
+
+                setOnErrorListener { mp, what, extra ->
+                    Toast.makeText(requireContext(), "Error al reproducir el audio", Toast.LENGTH_SHORT).show()
+                    releaseMediaPlayer()
+                    true
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "No se pudo reproducir el audio", Toast.LENGTH_SHORT).show()
+                releaseMediaPlayer()
+            }
+        }
+    }
+
+    // Liberar recursos del MediaPlayer
+    private fun releaseMediaPlayer() {
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
 }
