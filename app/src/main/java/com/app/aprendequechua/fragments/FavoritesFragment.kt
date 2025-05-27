@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class FavoritesFragment : Fragment() {
 
-    private lateinit var db: FirebaseFirestore
+    lateinit var db: FirebaseFirestore
     private lateinit var adapter: DictionaryAdapter
     private var mediaPlayer: MediaPlayer? = null
 
@@ -85,7 +85,7 @@ class FavoritesFragment : Fragment() {
             }
     }
 
-    private fun toggleFavorite(palabra: Palabra, isFavorite: Boolean) {
+    fun toggleFavorite(palabra: Palabra, isFavorite: Boolean) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val favoritosRef = db.collection("favoritos").document("${userId}_${palabra.palabraQuechuaLower}")
 
