@@ -18,7 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class FavoritesFragment : Fragment() {
 
-    lateinit var db: FirebaseFirestore
+    private lateinit var db: FirebaseFirestore
     private lateinit var adapter: DictionaryAdapter
     private var mediaPlayer: MediaPlayer? = null
 
