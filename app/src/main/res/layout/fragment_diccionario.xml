@@ -7,19 +7,20 @@
     tools:context=".fragments.DiccionarioFragment"
     android:background="@color/color_100">
 
-    <!-- Main content container -->
+    <!-- Cambié a FrameLayout como contenedor principal -->
+
+    <!-- Contenido principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- App bar with title -->
+        <!-- App bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/color_100"
-            android:elevation="4dp"
             android:padding="16dp">
 
             <TextView
@@ -32,52 +33,53 @@
                 android:textColor="@color/color_950"
                 android:gravity="center"/>
 
-            <!-- Search bar with improved styling -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/searchBarLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- Barra de búsqueda simplificada -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="16dp"
-                app:boxStrokeColor="@color/color_600"
-                app:hintTextColor="@color/color_500"
-                app:endIconTint="@color/color_600">
+                android:background="@drawable/search_bar_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/color_600" />
+
+                <EditText
                     android:id="@+id/searchInput"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
                     android:hint="Buscar palabra..."
                     android:textColor="@color/color_950"
                     android:textColorHint="@color/color_500"
-                    android:imeOptions="actionSearch"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:imeOptions="actionSearch"
+                    android:paddingStart="12dp"/>
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Results list with better spacing -->
+        <!-- Lista de resultados -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerResults"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
             android:paddingTop="8dp"
             android:paddingBottom="72dp"
-            android:scrollbars="vertical"
             tools:listitem="@layout/item_dictionary_result"/>
-
     </LinearLayout>
 
-    <!-- FAB with improved positioning and visual feedback -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/ListfabFavorites"
+    <!-- Botón flotante - Asegúrate de que está al final del XML -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/listfabFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:text="Favoritos"
-        android:textColor="@android:color/white"
-        android:icon="@drawable/ic_favorite_white"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_favorite_white"
         app:backgroundTint="@color/color_600"
-        app:iconTint="@android:color/white"
-        app:extendStrategy="auto"/>
+        app:tint="@color/white"/>
+
 </FrameLayout>

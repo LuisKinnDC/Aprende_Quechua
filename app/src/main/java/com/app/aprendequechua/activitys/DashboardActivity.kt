@@ -12,31 +12,37 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class DashboardActivity : AppCompatActivity() {
 
+    // Fragmentos únicos
+    private val inicioFragment = InicioFragment()
+    private val perfilFragment = PerfilFragment()
+    private val nivelesFragment = NivelesFragment()
+    private val juegosFragment = JuegosFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
         // Carga el fragment inicial
-        loadFragment(InicioFragment())
+        loadFragment(inicioFragment)
 
         // Configura BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.inicioFragment -> {
-                    loadFragment(InicioFragment())
+                    loadFragment(inicioFragment)
                     true
                 }
                 R.id.perfilFragment -> {
-                    loadFragment(PerfilFragment())
+                    loadFragment(perfilFragment)
                     true
                 }
                 R.id.leccionesFragment -> {
-                    loadFragment(NivelesFragment())
+                    loadFragment(nivelesFragment)
                     true
                 }
                 R.id.juegosFragment -> {
-                    loadFragment(JuegosFragment())
+                    loadFragment(juegosFragment)
                     true
                 }
                 else -> false
@@ -49,4 +55,6 @@ class DashboardActivity : AppCompatActivity() {
             .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
+
+
 }
