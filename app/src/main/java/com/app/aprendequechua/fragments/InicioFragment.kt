@@ -1,6 +1,5 @@
 package com.app.aprendequechua.fragments
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,24 +17,31 @@ import java.util.*
 
 class InicioFragment : Fragment() {
 
+    // Constante para el tipo de desafío
+    private val CHALLENGE_TYPE = "daily_challenges"
+
     // Referencias a las vistas
     private lateinit var textViewSaludo: TextView
     private lateinit var textViewNombreUsuario: TextView
     private lateinit var layoutDiccionario: FrameLayout
     private lateinit var layoutCuentos: FrameLayout
-    // Referencias para el Desafío Diario
+    private lateinit var layoutAdivinanzas: FrameLayout
+
+    // Desafío Diario
     private lateinit var txtTituloPregunta: TextView
     private lateinit var txtPreguntaDesafio: TextView
     private lateinit var inputRespuesta: TextInputEditText
     private lateinit var btnVerificarRespuesta: Button
-    // Referencias para el Progreso
+
+    // Progreso
     private lateinit var contadorProgreso: TextView
     private lateinit var progresoDiario: LinearProgressIndicator
     private lateinit var progressBar: ProgressBar
-    // Firebase y Repositorio
+
+    // Firebase y repositorio
     private lateinit var db: FirebaseFirestore
     private lateinit var userProgressRepository: UserProgressRepository
-    // Variables de estado
+
     private var currentChallengeIndex = 0
     private var challenges: List<DailyChallenge> = emptyList()
 
@@ -45,15 +51,14 @@ class InicioFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_inicio, container, false)
 
-        // Inicializa Firestore y el repositorio de progreso
         db = FirebaseFirestore.getInstance()
         userProgressRepository = UserProgressRepository()
 
-        // Referencias a las vistas
         textViewSaludo = view.findViewById(R.id.txtSaludo)
         textViewNombreUsuario = view.findViewById(R.id.txtNombreUsuario)
         layoutDiccionario = view.findViewById(R.id.cardDictionary)
-        layoutCuentos = view.findViewById(R.id.cardCuentos) // Referencia al card de Cuentos
+        layoutCuentos = view.findViewById(R.id.cardCuentos)
+        layoutAdivinanzas = view.findViewById(R.id.cardAdivinanzas)
         txtTituloPregunta = view.findViewById(R.id.txtTituloPregunta)
         txtPreguntaDesafio = view.findViewById(R.id.txtPreguntaDesafio)
         inputRespuesta = view.findViewById(R.id.inputRespuesta)
@@ -62,17 +67,11 @@ class InicioFragment : Fragment() {
         progresoDiario = view.findViewById(R.id.progresoDiario)
         progressBar = view.findViewById(R.id.progressBar)
 
-        // Configurar el nombre del usuario autenticado
         setupUserName()
-
-        // Configurar el saludo dinámico
         setupDynamicGreeting()
-
-        // Configurar el clic en el ícono del diccionario
         setupDictionaryClickListener()
-
-        // Configurar el clic en el card de cuentos
         setupCuentosClickListener()
+        setupAdivinanzasClickListener()
 
         return view
     }
@@ -82,7 +81,6 @@ class InicioFragment : Fragment() {
         loadUserProgress()
     }
 
-    // Configurar el nombre del usuario autenticado
     private fun setupUserName() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
@@ -98,8 +96,7 @@ class InicioFragment : Fragment() {
                         textViewNombreUsuario.text = displayName
                     }
                 }
-                .addOnFailureListener { exception ->
-                    println("Error al cargar el nombre del usuario: ${exception.message}")
+                .addOnFailureListener {
                     val displayName = user.displayName ?: "Usuario"
                     textViewNombreUsuario.text = displayName
                 }
@@ -108,7 +105,6 @@ class InicioFragment : Fragment() {
         }
     }
 
-    // Configurar el saludo dinámico
     private fun setupDynamicGreeting() {
         val calendar = Calendar.getInstance()
         val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
@@ -120,7 +116,6 @@ class InicioFragment : Fragment() {
         textViewSaludo.text = greeting
     }
 
-    // Configurar el clic en el ícono del diccionario
     private fun setupDictionaryClickListener() {
         layoutDiccionario.setOnClickListener {
             val diccionarioFragment = DiccionarioFragment()
@@ -131,7 +126,6 @@ class InicioFragment : Fragment() {
         }
     }
 
-    // Configurar el clic en el card de cuentos
     private fun setupCuentosClickListener() {
         layoutCuentos.setOnClickListener {
             val cuentosFragment = CuentosFragment()
@@ -142,11 +136,32 @@ class InicioFragment : Fragment() {
         }
     }
 
-    // Cargar el progreso del usuario desde Firestore
+    private fun setupAdivinanzasClickListener() {
+        layoutAdivinanzas.setOnClickListener {
+            val adivinanzasFragment = AdivinanzasFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, adivinanzasFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+    }
+
     private fun loadUserProgress() {
         progressBar.visibility = View.VISIBLE
+
+        val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
+
+        if (userId == null) {
+            progressBar.visibility = View.GONE
+            Toast.makeText(context, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         userProgressRepository.getUserProgress(
-            onSuccess = { completedChallenges, challengesCompleted ->
+            type = CHALLENGE_TYPE,
+            userId1 = userId,
+            onSuccess = { completedChallenges, challengesCompleted, selectedChallenges ->
                 progressBar.visibility = View.GONE
                 currentChallengeIndex = completedChallenges
                 if (challengesCompleted) {
@@ -163,15 +178,10 @@ class InicioFragment : Fragment() {
         )
     }
 
-    // Cargar los desafíos desde Firestore
     private fun loadChallenges() {
-        val userId = userProgressRepository.getUserId()
-        if (userId == null) {
-            println("Usuario no autenticado")
-            return
-        }
-
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
         db.collection("user_progress").document(userId)
             .get()
             .addOnSuccessListener { document ->
@@ -193,8 +203,7 @@ class InicioFragment : Fragment() {
                                     txtPreguntaDesafio.text = ""
                                 }
                             }
-                            .addOnFailureListener { exception ->
-                                println("Error al cargar los desafíos almacenados: ${exception.message}")
+                            .addOnFailureListener {
                                 txtTituloPregunta.text = "Error al cargar los desafíos."
                                 txtPreguntaDesafio.text = ""
                             }
@@ -213,8 +222,7 @@ class InicioFragment : Fragment() {
                                     txtPreguntaDesafio.text = ""
                                 }
                             }
-                            .addOnFailureListener { exception ->
-                                println("Error al cargar los desafíos diarios: ${exception.message}")
+                            .addOnFailureListener {
                                 txtTituloPregunta.text = "Error al cargar los desafíos."
                                 txtPreguntaDesafio.text = ""
                             }
@@ -234,28 +242,28 @@ class InicioFragment : Fragment() {
                                 txtPreguntaDesafio.text = ""
                             }
                         }
-                        .addOnFailureListener { exception ->
-                            println("Error al cargar los desafíos diarios: ${exception.message}")
+                        .addOnFailureListener {
                             txtTituloPregunta.text = "Error al cargar los desafíos."
                             txtPreguntaDesafio.text = ""
                         }
                 }
             }
-            .addOnFailureListener { exception ->
-                println("Error al cargar el progreso del usuario: ${exception.message}")
+            .addOnFailureListener {
                 txtTituloPregunta.text = "Error al cargar los desafíos."
                 txtPreguntaDesafio.text = ""
             }
     }
 
-    // Mostrar el desafío actual
     private fun showCurrentChallenge() {
         if (currentChallengeIndex < challenges.size) {
             val challenge = challenges[currentChallengeIndex]
             txtTituloPregunta.text = challenge.titulo_pregunta
             txtPreguntaDesafio.text = challenge.pregunta
             inputRespuesta.setText("")
+            inputRespuesta.isEnabled = true
+            btnVerificarRespuesta.visibility = View.VISIBLE
             updateProgress()
+
             btnVerificarRespuesta.setOnClickListener {
                 val userAnswer = inputRespuesta.text.toString().trim()
                 verifyAnswer(userAnswer, challenge.respuesta_correcta)
@@ -266,34 +274,17 @@ class InicioFragment : Fragment() {
         }
     }
 
-    // Verificar la respuesta del usuario
     private fun verifyAnswer(userAnswer: String, correctAnswer: String?) {
-        if (userAnswer == correctAnswer) {
+        if (userAnswer.equals(correctAnswer, ignoreCase = true)) {
             Toast.makeText(context, "¡Respuesta correcta!", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(
-                context,
-                "Respuesta incorrecta. La respuesta era: $correctAnswer",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(context, "Respuesta incorrecta. La respuesta era: $correctAnswer", Toast.LENGTH_SHORT).show()
         }
         currentChallengeIndex++
         updateUserProgress()
         showCurrentChallenge()
     }
 
-    // Marcar los desafíos como completados
-    private fun markChallengesAsCompleted() {
-        userProgressRepository.updateUserProgress(
-            completedChallenges = challenges.size,
-            challengesCompleted = true,
-            onFailure = { message ->
-                println(message)
-            }
-        )
-    }
-
-    // Mostrar el mensaje de finalización
     private fun showCompletionMessage() {
         txtTituloPregunta.text = "¡Has completado todos los desafíos!"
         txtPreguntaDesafio.text = ""
@@ -303,19 +294,14 @@ class InicioFragment : Fragment() {
         updateProgress()
     }
 
-    // Actualizar el contador y la barra de progreso
     private fun updateProgress() {
         val completedChallenges = currentChallengeIndex
         val totalChallenges = challenges.size
-        val remainingChallenges = if (totalChallenges > completedChallenges) {
-            totalChallenges - completedChallenges
+        val remainingChallenges = (totalChallenges - completedChallenges).coerceAtLeast(0)
+        contadorProgreso.text = if (remainingChallenges > 0) {
+            "Tienes $remainingChallenges desafío${if (remainingChallenges > 1) "s" else ""} hoy"
         } else {
-            0
-        }
-        if (remainingChallenges > 0) {
-            contadorProgreso.text = "Tienes $remainingChallenges desafío${if (remainingChallenges > 1) "s" else ""} hoy"
-        } else {
-            contadorProgreso.text = "Ya completó todos los desafíos de hoy"
+            "Ya completó todos los desafíos de hoy"
         }
         val progressPercentage = if (totalChallenges > 0) {
             (completedChallenges.toFloat() / totalChallenges) * 100
@@ -325,14 +311,27 @@ class InicioFragment : Fragment() {
         progresoDiario.progress = progressPercentage.toInt()
     }
 
-    // Actualizar el progreso del usuario en Firestore
     private fun updateUserProgress() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         userProgressRepository.updateUserProgress(
+            type = CHALLENGE_TYPE,
             completedChallenges = currentChallengeIndex,
             challengesCompleted = currentChallengeIndex >= challenges.size,
-            onFailure = { message ->
-                println(message)
-            }
+            onFailure = { message -> println(message) },
+            userId = userId
+        )
+    }
+
+    private fun markChallengesAsCompleted() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        userProgressRepository.updateUserProgress(
+            userId = userId,
+            type = CHALLENGE_TYPE,
+            completedChallenges = challenges.size,
+            challengesCompleted = true,
+            onFailure = { message -> println(message) }
         )
     }
 }

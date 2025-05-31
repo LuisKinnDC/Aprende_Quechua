@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_100">
+
+    <!-- Pantalla principal de adivinanzas -->
+    <ScrollView
+        android:id="@+id/mainGameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Tarjeta de Adivinanza -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Encabezado con nivel y pista -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <!-- Nivel de dificultad -->
+                        <TextView
+                            android:id="@+id/txtDifficulty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fácil"
+                            android:textColor="@color/color_600"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:background="@drawable/bg_difficulty_tag"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="4dp"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"/>
+
+                        <!-- Botón de pista -->
+                        <ImageButton
+                            android:id="@+id/btnHint"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_lightbulb_outline"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Mostrar pista"
+                            app:tint="@color/color_600" />
+                    </LinearLayout>
+
+                    <!-- Texto de la adivinanza -->
+                    <TextView
+                        android:id="@+id/txtAdivinanza"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera."
+                        android:textColor="@color/color_950"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:lineSpacingExtra="4sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- Pista (oculta inicialmente) -->
+                    <TextView
+                        android:id="@+id/txtHint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pista: Es una fruta que se come cruda y es muy refrescante."
+                        android:textColor="@color/color_600"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:visibility="gone"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Opciones de respuesta como Cards -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <!-- Opción 1 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardOption1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="12dp"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="limón"
+                        android:textColor="@color/color_950"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:padding="16dp"/>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Opción 2 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardOption2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="12dp"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="manzana"
+                        android:textColor="@color/color_950"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:padding="16dp"/>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Opción 3 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardOption3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="12dp"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="uva"
+                        android:textColor="@color/color_950"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:padding="16dp"/>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Opción 4 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardOption4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="pera"
+                        android:textColor="@color/color_950"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:padding="16dp"/>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+            <!-- Abtn verificar-->
+            <Button
+                android:id="@+id/btnVerify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Verificar"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/color_600"
+                android:textColor="@color/color_50"
+                android:visibility="gone"
+                android:enabled="false"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Pantalla de felicitaciones (inicialmente oculta) -->
+    <LinearLayout
+        android:id="@+id/completionScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="40dp"
+        android:visibility="gone"
+        android:background="@color/color_100">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_trophy"
+            android:layout_marginBottom="24dp"
+            app:tint="@color/color_600" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡Felicidades!"
+            android:textColor="@color/color_950"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Has completado todas las adivinanzas de hoy"
+            android:textColor="@color/color_600"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginBottom="32dp"/>
+
+        <Button
+            android:id="@+id/btnReturn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver al inicio"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/color_600"
+            android:textColor="@color/white"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="12dp"/>
+    </LinearLayout>
+</FrameLayout>
