@@ -76,6 +76,16 @@ dependencies {
 
     }
 
+    // Para pruebas unitarias
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("org.mockito:mockito-core:4.11.0")
+
+    // Para pruebas instrumentadas
+    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation ("com.google.android.material:material:1.6.0")
+
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(libs.core.ktx)
     implementation(libs.androidx.ui.test.android)

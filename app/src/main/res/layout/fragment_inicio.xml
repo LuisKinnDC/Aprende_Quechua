@@ -1,439 +1,435 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.InicioFragment"
-    android:background="@color/color_100">
+    android:background="@color/color_100"
+    tools:context=".fragments.InicioFragment">
 
-    <!-- Fondo superior -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@drawable/bg_top_perfil">
-
-        <!-- Saludo -->
-        <TextView
-            android:id="@+id/txtSaludo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="52dp"
-            android:text="Hola, Buenos días!"
-            android:textColor="@color/color_50"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Nombre del usuario -->
-        <TextView
-            android:id="@+id/txtNombreUsuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text=""
-            android:textColor="@color/color_50"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtSaludo" />
-
-        <!-- Imagen de perfil -->
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="52dp"
-            android:layout_marginEnd="32dp"
-            android:src="@drawable/ic_defect_profile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Contenido principal -->
-    <LinearLayout
+    <!-- App Bar with User Profile -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/blanco_arriba_boton"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="12dp">
-
-        <!-- Sección "BÁSICO" -->
+        android:background="@drawable/bg_top_perfil"
+        android:elevation="0dp">
         <LinearLayout
-            android:id="@+id/layoutBasico"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:orientation="vertical"
-            android:background="@drawable/arriba_botones"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/imgBasico"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_essential" />
-
-            <TextView
-                android:id="@+id/txtBasico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Básico"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <!-- Espacio entre secciones -->
-        <View
-            android:layout_width="8dp"
-            android:layout_height="match_parent" />
-
-        <!-- Sección "INTERMEDIO" -->
-        <LinearLayout
-            android:id="@+id/layoutIntermedio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/arriba_botones"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/imgIntermedio"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_intermediate" />
-
-            <TextView
-                android:id="@+id/txtIntermedio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Intermedio"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <!-- Espacio entre secciones -->
-        <View
-            android:layout_width="8dp"
-            android:layout_height="match_parent" />
-
-        <!-- Sección "AVANZADO" -->
-        <LinearLayout
-            android:id="@+id/layoutAvanzado"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/arriba_botones"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/imgAvanzado"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_advanced" />
-
-            <TextView
-                android:id="@+id/txtAvanzado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Avanzado"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:gravity="center" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="340dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/bg_info_nivel"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp">
-
-
-        <!-- Contenedor vertical para texto -->
-        <ImageView
-            android:id="@+id/imageViewNivel"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_advanced" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <!-- Texto del nivel -->
-            <TextView
-                android:id="@+id/txtNivel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nivel Actual: BÁSICO"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <!-- Barra de progreso -->
-            <ProgressBar
-                android:id="@+id/progressBarProgreso"
-                style="?android:attr/progressBarStyleHorizontal"
+            android:padding="16dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="8dp"
-                android:progress="50"
-                android:progressBackgroundTint="@color/color_50" />
-
-            <!-- Texto del progreso -->
-            <TextView
-                android:id="@+id/txtProgreso"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Progreso está al 50%"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:orientation="horizontal">
+                <!-- User Info -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txtSaludo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hola, Buenos días!"
+                        android:textColor="@color/color_50"
+                        android:textSize="16sp"/>
+                    <TextView
+                        android:id="@+id/txtNombreUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Nombre Usuario"
+                        android:textColor="@color/color_50"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+                <!-- Profile Image -->
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_defect_profile"
+                    android:contentDescription="Foto de perfil"/>
+            </LinearLayout>
+            <!-- Daily Progress desafios -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tu Desafío diario"
+                        android:textColor="@color/color_950"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/contadorProgeso"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/color_600"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progresoDiario"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="8dp"
+                        android:progress="0"
+                        app:indicatorColor="@color/color_600"
+                        app:trackColor="@color/color_200"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutBotones"
+    <!-- Main Content -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:padding="16dp">
-
-        <!-- GridLayout con 3 columnas y 2 filas -->
-        <GridLayout
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:orientation="horizontal"
-            android:alignmentMode="alignMargins"
-            android:rowCount="2"
-            android:useDefaultMargins="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <!-- Botón 1: Diccionario -->
-            <LinearLayout
-                android:layout_width="0dp"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <!-- Featured Lesson -->
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <FrameLayout
-                    android:id="@+id/layoutDiccionario"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton">
-
-                    <ImageView
-                        android:id="@+id/imgBook"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_book" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/txtDiccionario"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Diccionario"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Botón 2: Pronunciación -->
-            <LinearLayout
-                android:layout_width="0dp"
+                android:text="Lección destacada"
+                android:textColor="@color/color_950"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <FrameLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton">
-
-                    <ImageView
-                        android:id="@+id/imgAudio"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_audio_book" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/txtPronunciacion"
-                    android:layout_width="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="24dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Pronunciación"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Botón 3: Cuentos -->
-            <LinearLayout
-                android:layout_width="0dp"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_greetings"
+                        android:contentDescription="Lección destacada"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Saludos básicos"
+                            android:textColor="@color/color_950"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Aprende a saludar en Quechua"
+                            android:textColor="@color/color_600"
+                            android:textSize="14sp"/>
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Comenzar lección"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/color_600"
+                            app:cornerRadius="24dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Quick Actions -->
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <FrameLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton">
-
-                    <ImageView
-                        android:id="@+id/imgCuentos"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_book_open" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/txtCuentos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Cuentos"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Botón 4: Adivinanzas -->
-            <LinearLayout
-                android:layout_width="0dp"
+                android:text="Acciones rápidas"
+                android:textColor="@color/color_950"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <GridLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <FrameLayout
-                    android:id="@+id/layoutAdivinanza"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton">
-
-                    <ImageView
-                        android:id="@+id/imgBookAdivinanza"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_adivinza" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/txtAdivinaza"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Adivinzas"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Botón 5: (Ejemplo Extra) -->
-            <LinearLayout
-                android:layout_width="0dp"
+                android:columnCount="2"
+                android:rowCount="3"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                android:useDefaultMargins="true">
+                <!-- Dictionary -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardDictionary"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="@color/color_200"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_book"
+                            app:tint="@color/color_600" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Diccionario"
+                            android:textColor="@color/color_950"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <!-- Pronunciation -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardPronunciation"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="@color/color_200"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_audio_book"
+                            app:tint="@color/color_600" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Pronunciación"
+                            android:textColor="@color/color_950"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <!-- Cuentos -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCuentos"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="@color/color_200"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_book_open"
+                            app:tint="@color/color_600" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Cuentos"
+                            android:textColor="@color/color_950"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <!-- Adivinanzas -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardAdivinanzas"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="@color/color_200"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_adivinza"
+                            app:tint="@color/color_600" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Adivinanzas"
+                            android:textColor="@color/color_950"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <!-- Games -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardGames"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="@color/color_200"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_game"
+                            app:tint="@color/color_600" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Juegos"
+                            android:textColor="@color/color_950"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <!-- Challenges -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardChallenges"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="@color/color_200"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:tint="@color/color_600" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Desafíos"
+                            android:textColor="@color/color_950"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </GridLayout>
+            <!-- Daily Challenge -->
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <FrameLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton">
-
-                    <ImageView
-                        android:id="@+id/imgExtra1"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/txtExtra1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Extra 1"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Botón 6: (Ejemplo Extra) -->
-            <LinearLayout
-                android:layout_width="0dp"
+                android:text="Desafío diario"
+                android:textColor="@color/color_950"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <FrameLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/blanco_arriba_boton">
-
-                    <ImageView
-                        android:id="@+id/imgExtra2"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/txtExtra2"
-                    android:layout_width="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Extra 2"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </GridLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <!-- Título del Desafío -->
+                    <TextView
+                        android:id="@+id/txtTituloPregunta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Traduce esta frase"
+                        android:textColor="@color/color_600"
+                        android:textSize="14sp"/>
+                    <!-- Pregunta del Desafío -->
+                    <TextView
+                        android:id="@+id/txtPreguntaDesafio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="¿Cómo estás hoy?"
+                        android:textColor="@color/color_950"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <!-- Campo de Respuesta -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/color_600"
+                        app:hintTextColor="@color/color_600">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputRespuesta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Tu Respuesta"
+                            android:textColor="@color/color_950"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <!-- Botón para Verificar Respuesta -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnVerificarRespuesta"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Verificar respuesta"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/color_600"
+                        app:cornerRadius="24dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
+    <!-- ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

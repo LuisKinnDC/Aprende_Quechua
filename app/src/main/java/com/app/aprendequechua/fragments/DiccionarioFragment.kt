@@ -38,7 +38,7 @@ class DiccionarioFragment : Fragment() {
 
         val searchInput = view.findViewById<EditText>(R.id.searchInput)
         val recyclerResults = view.findViewById<RecyclerView>(R.id.recyclerResults)
-        val ListfabFavorites = view.findViewById<View>(R.id.ListfabFavorites)
+        val ListfabFavorites = view.findViewById<View>(R.id.listfabFavorites)
 
         // Inicializar el adaptador con callbacks
         adapter = DictionaryAdapter(
