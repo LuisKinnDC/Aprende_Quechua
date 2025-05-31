@@ -1,6 +1,6 @@
 package com.app.aprendequechua.fragments
 
-import android.annotation.SuppressLint
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class InicioFragment : Fragment() {
 
@@ -24,22 +22,19 @@ class InicioFragment : Fragment() {
     private lateinit var textViewSaludo: TextView
     private lateinit var textViewNombreUsuario: TextView
     private lateinit var layoutDiccionario: FrameLayout
-
+    private lateinit var layoutCuentos: FrameLayout
     // Referencias para el Desafío Diario
     private lateinit var txtTituloPregunta: TextView
     private lateinit var txtPreguntaDesafio: TextView
     private lateinit var inputRespuesta: TextInputEditText
     private lateinit var btnVerificarRespuesta: Button
-
     // Referencias para el Progreso
     private lateinit var contadorProgreso: TextView
     private lateinit var progresoDiario: LinearProgressIndicator
     private lateinit var progressBar: ProgressBar
-
     // Firebase y Repositorio
     private lateinit var db: FirebaseFirestore
     private lateinit var userProgressRepository: UserProgressRepository
-
     // Variables de estado
     private var currentChallengeIndex = 0
     private var challenges: List<DailyChallenge> = emptyList()
@@ -58,6 +53,7 @@ class InicioFragment : Fragment() {
         textViewSaludo = view.findViewById(R.id.txtSaludo)
         textViewNombreUsuario = view.findViewById(R.id.txtNombreUsuario)
         layoutDiccionario = view.findViewById(R.id.cardDictionary)
+        layoutCuentos = view.findViewById(R.id.cardCuentos) // Referencia al card de Cuentos
         txtTituloPregunta = view.findViewById(R.id.txtTituloPregunta)
         txtPreguntaDesafio = view.findViewById(R.id.txtPreguntaDesafio)
         inputRespuesta = view.findViewById(R.id.inputRespuesta)
@@ -68,10 +64,15 @@ class InicioFragment : Fragment() {
 
         // Configurar el nombre del usuario autenticado
         setupUserName()
+
         // Configurar el saludo dinámico
         setupDynamicGreeting()
+
         // Configurar el clic en el ícono del diccionario
         setupDictionaryClickListener()
+
+        // Configurar el clic en el card de cuentos
+        setupCuentosClickListener()
 
         return view
     }
@@ -81,66 +82,62 @@ class InicioFragment : Fragment() {
         loadUserProgress()
     }
 
-
     // Configurar el nombre del usuario autenticado
     private fun setupUserName() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             val userId = user.uid
-
-            // Leer los datos del usuario desde Firestore
             db.collection("usuarios").document(userId)
                 .get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
-                        // Recuperar el nombre del usuario desde Firestore
                         val nombreFirestore = document.getString("nombre") ?: "Usuario"
                         textViewNombreUsuario.text = nombreFirestore
                     } else {
-                        // Si no hay datos en Firestore, usar el nombre de Firebase Auth
                         val displayName = user.displayName ?: "Usuario"
                         textViewNombreUsuario.text = displayName
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Manejar errores al leer los datos de Firestore
                     println("Error al cargar el nombre del usuario: ${exception.message}")
                     val displayName = user.displayName ?: "Usuario"
                     textViewNombreUsuario.text = displayName
                 }
         } else {
-            // Si no hay usuario autenticado, mostrar un valor predeterminado
             textViewNombreUsuario.text = "Usuario no autenticado"
         }
     }
 
     // Configurar el saludo dinámico
     private fun setupDynamicGreeting() {
-        // Obtener la hora actual
         val calendar = Calendar.getInstance()
         val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
-
-        // Determinar el saludo basado en la hora
         val greeting = when {
-            hourOfDay in 5..11 -> "Hola👋, ¡Buenos días!"   // 05:00 a.m. – 11:59 a.m.
-            hourOfDay in 12..18 -> "Hola👋, ¡Buenas tardes!" // 12:00 p.m. – 6:59 p.m.
-            else -> "Hola👋, ¡Buenas noches!"              // 7:00 p.m. – 4:59 a.m.
+            hourOfDay in 5..11 -> "Hola👋, ¡Buenos días!"
+            hourOfDay in 12..18 -> "Hola👋, ¡Buenas tardes!"
+            else -> "Hola👋, ¡Buenas noches!"
         }
-
-        // Mostrar el saludo
         textViewSaludo.text = greeting
     }
 
     // Configurar el clic en el ícono del diccionario
     private fun setupDictionaryClickListener() {
         layoutDiccionario.setOnClickListener {
-            // Crear una instancia del fragmento de diccionario
             val diccionarioFragment = DiccionarioFragment()
-
-            // Realizar la transición al fragmento de diccionario
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, diccionarioFragment) // Reemplaza el contenedor principal
-                .addToBackStack(null) // Agrega la transacción al back stack
+                .replace(R.id.fragmentContainer, diccionarioFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+    }
+
+    // Configurar el clic en el card de cuentos
+    private fun setupCuentosClickListener() {
+        layoutCuentos.setOnClickListener {
+            val cuentosFragment = CuentosFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, cuentosFragment)
+                .addToBackStack(null)
                 .commit()
         }
     }
@@ -175,14 +172,12 @@ class InicioFragment : Fragment() {
         }
 
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-
         db.collection("user_progress").document(userId)
             .get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val lastAccessDate = document.getString("lastAccessDate") ?: ""
                     val selectedChallenges = document.get("selectedChallenges") as? List<String> ?: emptyList()
-
                     if (lastAccessDate == today && selectedChallenges.isNotEmpty()) {
                         // Cargar los desafíos almacenados
                         val challengesCollection = db.collection("daily_challenges")
@@ -194,7 +189,6 @@ class InicioFragment : Fragment() {
                                     challenges = querySnapshot.documents.mapNotNull { it.toObject(DailyChallenge::class.java) }
                                     showCurrentChallenge()
                                 } else {
-                                    // No hay desafíos disponibles
                                     txtTituloPregunta.text = "No hay desafíos disponibles."
                                     txtPreguntaDesafio.text = ""
                                 }
@@ -215,7 +209,6 @@ class InicioFragment : Fragment() {
                                     challenges = allChallenges.shuffled().take(3)
                                     showCurrentChallenge()
                                 } else {
-                                    // No hay desafíos disponibles
                                     txtTituloPregunta.text = "No hay desafíos disponibles."
                                     txtPreguntaDesafio.text = ""
                                 }
@@ -237,7 +230,6 @@ class InicioFragment : Fragment() {
                                 challenges = allChallenges.shuffled().take(3)
                                 showCurrentChallenge()
                             } else {
-                                // No hay desafíos disponibles
                                 txtTituloPregunta.text = "No hay desafíos disponibles."
                                 txtPreguntaDesafio.text = ""
                             }
@@ -264,7 +256,6 @@ class InicioFragment : Fragment() {
             txtPreguntaDesafio.text = challenge.pregunta
             inputRespuesta.setText("")
             updateProgress()
-
             btnVerificarRespuesta.setOnClickListener {
                 val userAnswer = inputRespuesta.text.toString().trim()
                 verifyAnswer(userAnswer, challenge.respuesta_correcta)
@@ -316,25 +307,21 @@ class InicioFragment : Fragment() {
     private fun updateProgress() {
         val completedChallenges = currentChallengeIndex
         val totalChallenges = challenges.size
-
         val remainingChallenges = if (totalChallenges > completedChallenges) {
             totalChallenges - completedChallenges
         } else {
             0
         }
-
         if (remainingChallenges > 0) {
             contadorProgreso.text = "Tienes $remainingChallenges desafío${if (remainingChallenges > 1) "s" else ""} hoy"
         } else {
             contadorProgreso.text = "Ya completó todos los desafíos de hoy"
         }
-
         val progressPercentage = if (totalChallenges > 0) {
             (completedChallenges.toFloat() / totalChallenges) * 100
         } else {
             0f
         }
-
         progresoDiario.progress = progressPercentage.toInt()
     }
 

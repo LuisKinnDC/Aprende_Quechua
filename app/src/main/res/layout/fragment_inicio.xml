@@ -240,9 +240,9 @@
                             android:textSize="14sp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-                <!-- Stories -->
+                <!-- Cuentos -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardStories"
+                    android:id="@+id/cardCuentos"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"
@@ -269,9 +269,9 @@
                             android:textSize="14sp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-                <!-- Riddles -->
+                <!-- Adivinanzas -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardRiddles"
+                    android:id="@+id/cardAdivinanzas"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"

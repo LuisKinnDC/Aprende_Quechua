@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_paper_texture"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Encabezado del cuento -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp"
+            android:gravity="center_horizontal">
+
+            <!-- Decoración superior -->
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_book_divider_top"
+                android:layout_marginBottom="8dp"
+                app:tint="@color/color_600" />
+
+            <!-- Título del cuento -->
+            <TextView
+                android:id="@+id/tvStoryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="El Cuento Maravilloso"
+                android:textColor="@color/color_900"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:letterSpacing="0.03"
+                android:lineSpacingExtra="4sp"
+                android:fontFamily="@font/merriweather_bold"/>
+
+            <!-- Autor -->
+            <TextView
+                android:id="@+id/tvStoryAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Por: Autor Desconocido"
+                android:textColor="@color/color_600"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/merriweather_italic"/>
+
+            <!-- Decoración inferior -->
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_book_divider_bottom"
+                android:layout_marginTop="16dp"
+                app:tint="@color/color_600" />
+        </LinearLayout>
+
+        <!-- Cuerpo del cuento -->
+        <TextView
+            android:id="@+id/tvStoryContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_story_text"
+            android:textColor="@color/color_800"
+            android:textSize="18sp"
+            android:lineSpacingMultiplier="1.4"
+            android:letterSpacing="0.01"
+            android:textAlignment="viewStart"
+            android:fontFamily="@font/merriweather_regular"/>
+
+        <!-- Sección de información adicional -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_author_note"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sobre el autor"
+                android:textColor="@color/color_700"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_medium"/>
+
+            <TextView
+                android:id="@+id/tvAuthorBio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Breve biografía del autor o información adicional sobre el cuento."
+                android:textColor="@color/color_700"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4sp"
+                android:fontFamily="@font/roboto_regular"/>
+        </LinearLayout>
+
+        <!-- Espacio al final para mejor visualización -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

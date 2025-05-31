@@ -4,6 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="module_icon" />
+    <string name="sample_story_text" />
 
     <string-array name="generos">
         <item>Selecciona tu género</item>
