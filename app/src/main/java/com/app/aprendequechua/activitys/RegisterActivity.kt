@@ -126,7 +126,7 @@ class RegisterActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 showToast("Datos guardados correctamente")
                 // Redirigir al usuario a la pantalla de inicio o login
-                val intent = Intent(this, LoginActivity::class.java)
+                val intent = Intent(this, DashboardActivity::class.java)
                 startActivity(intent)
                 finish()
             }

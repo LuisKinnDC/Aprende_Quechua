@@ -55,10 +55,28 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    // Test dependencies
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    dependencies {
+        // Unit tests
+        testImplementation("junit:junit:4.13.2")
+
+        // Mockito para mocks
+        testImplementation ("org.mockito:mockito-core:4.8.0")
+
+        // Para pruebas con Kotlin + Mockito
+        testImplementation ("org.mockito.kotlin:mockito-kotlin:4.1.0")
+
+        androidTestImplementation ("androidx.test.espresso:espresso-contrib:3.5.0")
+
+        // Instrumented tests
+        androidTestImplementation("androidx.test.ext:junit:1.1.5")
+        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+        androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.0")
+
+
+
+    }
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.ui.test.android)
 }
