@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.app.aprendequechua.R
 import com.app.aprendequechua.data.UserProgressRepository
+import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +17,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class InicioFragment : Fragment() {
+
+    private lateinit var profileImage: de.hdodenhof.circleimageview.CircleImageView
+
 
     // Constante para el tipo de desafío
     private val CHALLENGE_TYPE = "daily_challenges"
@@ -53,6 +57,8 @@ class InicioFragment : Fragment() {
 
         db = FirebaseFirestore.getInstance()
         userProgressRepository = UserProgressRepository()
+        profileImage = view.findViewById(R.id.profileImage)
+
 
         textViewSaludo = view.findViewById(R.id.txtSaludo)
         textViewNombreUsuario = view.findViewById(R.id.txtNombreUsuario)
@@ -72,6 +78,8 @@ class InicioFragment : Fragment() {
         setupDictionaryClickListener()
         setupCuentosClickListener()
         setupAdivinanzasClickListener()
+        loadProfileImage()
+
 
         return view
     }
@@ -80,6 +88,22 @@ class InicioFragment : Fragment() {
         super.onResume()
         loadUserProgress()
     }
+
+    private fun loadProfileImage() {
+        val user = FirebaseAuth.getInstance().currentUser
+        val photoUrl = user?.photoUrl
+
+        if (photoUrl != null && isAdded) {
+            Glide.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.ic_defect_profile)
+                .error(R.drawable.ic_defect_profile)
+                .into(profileImage)
+        } else {
+            profileImage.setImageResource(R.drawable.ic_defect_profile)
+        }
+    }
+
 
     private fun setupUserName() {
         val user = FirebaseAuth.getInstance().currentUser

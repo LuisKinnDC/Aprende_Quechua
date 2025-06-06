@@ -12,15 +12,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.app.aprendequechua.R
 import com.app.aprendequechua.activitys.LoginActivity
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.Calendar
+import java.util.*
 
 class PerfilFragment : Fragment() {
 
@@ -33,9 +34,14 @@ class PerfilFragment : Fragment() {
     private lateinit var txtGenero: TextView
     private lateinit var imgEdit: ImageView
     private lateinit var imgDelete: ImageView
+    private lateinit var btnEditPhoto: FloatingActionButton
     private lateinit var authListener: FirebaseAuth.AuthStateListener
+    private lateinit var imgPerfil: de.hdodenhof.circleimageview.CircleImageView
+
 
     private val RC_SIGN_IN = 1001
+    private var onSuccessAfterReauth: (() -> Unit)? = null
+    private var onFailureAfterReauth: ((Exception) -> Unit)? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -46,6 +52,7 @@ class PerfilFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        imgPerfil = view.findViewById(R.id.imgPerfil)
 
         val currentUser = auth.currentUser
         if (currentUser == null) {
@@ -86,6 +93,7 @@ class PerfilFragment : Fragment() {
         txtFechaCumple.setOnClickListener {
             showDatePickerDialog(txtFechaCumple)
         }
+
 
         return view
     }
@@ -132,6 +140,18 @@ class PerfilFragment : Fragment() {
             }
         }
         txtProvider.text = provider
+
+        // Cargar foto de perfil Google en imgPerfil
+        val photoUrl = user.photoUrl
+        if (photoUrl != null && isAdded) {
+            Glide.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.ic_defect_profile) // Imagen placeholder
+                .error(R.drawable.ic_defect_profile) // Si falla la carga
+                .into(imgPerfil)
+        } else {
+            imgPerfil.setImageResource(R.drawable.ic_defect_profile)
+        }
     }
 
     private fun loadUserProfile() {
@@ -316,32 +336,56 @@ class PerfilFragment : Fragment() {
 
     private fun reauthenticateUser(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val user = auth.currentUser ?: return
-        var isGoogleUser = false
-        for (profile in user.providerData) {
-            if (profile.providerId == "google.com") {
-                isGoogleUser = true
-                break
-            }
+        val isGoogleUser = user.providerData.any { it.providerId == "google.com" }
+
+        if (isGoogleUser) {
+            // Google reauth - lanzar login Google
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+            startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
+
+            onSuccessAfterReauth = onSuccess
+            onFailureAfterReauth = onFailure
+        } else {
+            // Email/password reauth - pedir contraseña con diálogo
+            val input = EditText(requireContext())
+            input.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Reautenticación requerida")
+                .setMessage("Por favor ingresa tu contraseña para continuar")
+                .setView(input)
+                .setPositiveButton("Confirmar") { dialog, _ ->
+                    val password = input.text.toString()
+                    if (password.isBlank()) {
+                        Toast.makeText(context, "Contraseña no puede estar vacía", Toast.LENGTH_SHORT).show()
+                        onFailure(Exception("Contraseña vacía"))
+                        return@setPositiveButton
+                    }
+                    val credential = com.google.firebase.auth.EmailAuthProvider
+                        .getCredential(user.email!!, password)
+
+                    user.reauthenticate(credential)
+                        .addOnSuccessListener {
+                            onSuccess()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Error al reautenticar: ${it.message}", Toast.LENGTH_SHORT).show()
+                            onFailure(it)
+                        }
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancelar") { dialog, _ ->
+                    dialog.dismiss()
+                    onFailure(Exception("Reautenticación cancelada"))
+                }
+                .show()
         }
-        if (!isGoogleUser) {
-            // Email/Password user, no special UI needed, just proceed
-            onSuccess()
-            return
-        }
-        // For Google users, launch Google SignIn to reauthenticate
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-        startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
-        // We'll handle the rest in onActivityResult
-        this.onSuccessAfterReauth = onSuccess
-        this.onFailureAfterReauth = onFailure
     }
 
-    private var onSuccessAfterReauth: (() -> Unit)? = null
-    private var onFailureAfterReauth: ((Exception) -> Unit)? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -396,4 +440,5 @@ class PerfilFragment : Fragment() {
                 Toast.makeText(context, "Error al eliminar datos: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 }

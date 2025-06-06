@@ -46,13 +46,19 @@
                         android:textSize="18sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
-                <!-- Profile Image -->
-                <ImageView
+
+                <!-- Profile Image Inicio-->
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profileImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_defect_profile"
-                    android:contentDescription="Foto de perfil"/>
+                    android:contentDescription="Foto de perfil"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:civ_border_color="@color/color_50"
+                    app:civ_border_width="1dp"
+                    tools:ignore="MissingClass" />
             </LinearLayout>
             <!-- Daily Progress desafios -->
             <com.google.android.material.card.MaterialCardView
