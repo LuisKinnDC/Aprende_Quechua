@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_margin="8dp">
+
+    <!-- Imagen circular del avatar -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewAvatar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:civ_border_color="@color/color_200"
+        app:civ_border_width="1dp" />
+
+
+    <!-- Indicador de selección (checkmark) -->
+    <ImageView
+        android:id="@+id/selectedIndicator"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_check_circle"
+        app:tint="@color/color_50"
+        android:visibility="invisible" />
+
+</FrameLayout>

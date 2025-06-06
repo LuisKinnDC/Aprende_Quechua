@@ -2,6 +2,7 @@ package com.app.aprendequechua.fragments
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +11,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.app.aprendequechua.R
 import com.app.aprendequechua.activitys.LoginActivity
+import com.app.aprendequechua.adapters.AvatarAdapter
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,6 +25,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
 class PerfilFragment : Fragment() {
@@ -52,6 +58,7 @@ class PerfilFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        btnEditPhoto = view.findViewById(R.id.btnEditPhoto)
         imgPerfil = view.findViewById(R.id.imgPerfil)
 
         val currentUser = auth.currentUser
@@ -82,9 +89,16 @@ class PerfilFragment : Fragment() {
         val btnCerrarSesion = view.findViewById<Button>(R.id.button6)
         imgEdit = view.findViewById(R.id.imgEdit)
         imgDelete = view.findViewById(R.id.imgDelete)
+        btnEditPhoto = view.findViewById(R.id.btnEditPhoto)
 
         setupUserProfile()
         loadUserProfile()
+        loadProfileImage()
+
+        // Configurar el clic en el botón
+        btnEditPhoto.setOnClickListener {
+            showAvatarSelectionDialog()
+        }
 
         btnCerrarSesion.setOnClickListener { showLogoutConfirmationDialog() }
         imgEdit.setOnClickListener { showEditProfileDialog() }
@@ -93,6 +107,7 @@ class PerfilFragment : Fragment() {
         txtFechaCumple.setOnClickListener {
             showDatePickerDialog(txtFechaCumple)
         }
+
 
 
         return view
@@ -439,6 +454,115 @@ class PerfilFragment : Fragment() {
             .addOnFailureListener {
                 Toast.makeText(context, "Error al eliminar datos: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    // Mostrar el diálogo de selección de avatar
+    private fun showAvatarSelectionDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialog_avatar_selection)
+
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerViewAvatars)
+        recyclerView.layoutManager = GridLayoutManager(context, 3) // Mostrar 3 columnas
+
+        // Cargar avatares desde Firebase
+        loadAvatars { avatars ->
+            val adapter = AvatarAdapter(avatars) { selectedAvatar ->
+                // Actualizar la imagen de perfil con el avatar seleccionado
+                updateProfileImage(selectedAvatar)
+                dialog.dismiss()
+            }
+            recyclerView.adapter = adapter
+        }
+
+        dialog.show()
+    }
+
+    // Cargar la lista de avatares desde Firestore
+    private fun loadAvatars(onSuccess: (List<String>) -> Unit) {
+        val avatarUrls = mutableListOf<String>()
+        db.collection("avatars")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    val avatarUrl = document.getString("url")
+                    if (avatarUrl != null) {
+                        avatarUrls.add(avatarUrl)
+                    }
+                }
+                onSuccess(avatarUrls)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Error al cargar avatares: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // Cargar el avatar desde Firestore
+    private fun loadProfileImage() {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            db.collection("usuarios").document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val profileImageUrl = document.getString("profileImageUrl")
+                        if (profileImageUrl != null) {
+                            Glide.with(this)
+                                .load(profileImageUrl)
+                                .placeholder(R.drawable.ic_defect_profile)
+                                .into(imgPerfil)
+                        } else {
+                            // Si no hay URL, usar una imagen predeterminada
+                            Glide.with(this)
+                                .load(R.drawable.ic_defect_profile)
+                                .into(imgPerfil)
+                        }
+                    } else {
+                        // Si no hay documento, usar una imagen predeterminada
+                        Glide.with(this)
+                            .load(R.drawable.ic_defect_profile)
+                            .into(imgPerfil)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(context, "Error al cargar el avatar: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            // Si no hay usuario autenticado, usar una imagen predeterminada
+            Glide.with(this)
+                .load(R.drawable.ic_defect_profile)
+                .into(imgPerfil)
+        }
+    }
+
+    // Actualizar el avatar en Firestore y en la interfaz
+    private fun updateProfileImage(avatarUrl: String) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            db.collection("usuarios").document(userId)
+                .update("profileImageUrl", avatarUrl)
+                .addOnSuccessListener {
+                    Glide.with(this)
+                        .load(avatarUrl)
+                        .placeholder(R.drawable.ic_defect_profile)
+                        .into(imgPerfil)
+                    Toast.makeText(context, "Avatar actualizado correctamente.", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { exception ->
+                    // Si falla la actualización, intenta crear el campo
+                    db.collection("usuarios").document(userId)
+                        .set(mapOf("profileImageUrl" to avatarUrl), SetOptions.merge())
+                        .addOnSuccessListener {
+                            Glide.with(this)
+                                .load(avatarUrl)
+                                .placeholder(R.drawable.ic_defect_profile)
+                                .into(imgPerfil)
+                            Toast.makeText(context, "Avatar actualizado correctamente.", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { innerException ->
+                            Toast.makeText(context, "Error al actualizar el avatar: ${innerException.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+        }
     }
 
 }
