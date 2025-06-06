@@ -6,24 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.aprendequechua.R
+import com.google.android.material.chip.Chip
 
-class JuegosFragment : Fragment() {
+class QuizFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_juegos, container, false)
+        // Infla el layout para este fragment
+        return inflater.inflate(R.layout.fragment_quiz, container, false)
+    }
 
-        val txtVerJuegoQuiz = view.findViewById<View>(R.id.txtVerJuegoQuiz)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        txtVerJuegoQuiz.setOnClickListener {
+        val IrQuizBasico = view.findViewById<Chip>(R.id.IrQuizBasico)
+
+        IrQuizBasico.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, QuizFragment())
+                .replace(R.id.fragmentContainer, ResolverQuizFragment())
                 .addToBackStack(null) // Para que pueda regresar con el botón atrás
                 .commit()
         }
-
-        return view
     }
 }

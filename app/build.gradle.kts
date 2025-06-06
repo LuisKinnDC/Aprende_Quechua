@@ -54,6 +54,10 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     // Test dependencies
     testImplementation(libs.junit)
@@ -71,4 +75,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.6.0")
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 }

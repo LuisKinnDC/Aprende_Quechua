@@ -159,13 +159,50 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d("AuthDebug", "Inicio de sesión con Google exitoso")
                     Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                    redirectToDashboard()
+
+                    // Obtener usuario autenticado
+                    val user = auth.currentUser
+                    if (user != null) {
+                        val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                        val userRef = db.collection("usuarios").document(user.uid)
+
+                        // Verificar si ya existe el documento
+                        userRef.get().addOnSuccessListener { document ->
+                            if (!document.exists()) {
+                                val nuevoUsuario = hashMapOf(
+                                    "nombre" to (user.displayName ?: "Sin nombre"),
+                                    "email" to (user.email ?: ""),
+                                    "genero" to "",
+                                    "cumpleaños" to ""
+                                )
+                                userRef.set(nuevoUsuario)
+                                    .addOnSuccessListener {
+                                        Log.d("Firestore", "Documento de usuario creado correctamente")
+                                        redirectToDashboard()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("Firestore", "Error al crear documento de usuario", e)
+                                        redirectToDashboard()
+                                    }
+                            } else {
+                                Log.d("Firestore", "El documento del usuario ya existe")
+                                redirectToDashboard()
+                            }
+                        }.addOnFailureListener { e ->
+                            Log.e("Firestore", "Error al acceder al documento", e)
+                            redirectToDashboard()
+                        }
+                    } else {
+                        Log.e("AuthDebug", "Usuario es null después del inicio con Google")
+                        Toast.makeText(this, "Error interno al iniciar sesión", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Log.e("AuthDebug", "Error al autenticar con Firebase: ${task.exception?.message}")
                     Toast.makeText(this, "Error al autenticar con Firebase", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 
     private fun redirectToDashboard() {
         startActivity(Intent(this, DashboardActivity::class.java))

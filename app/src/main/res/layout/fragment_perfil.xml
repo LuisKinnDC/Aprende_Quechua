@@ -1,81 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.PerfilFragment">
+    android:background="@color/color_100">
 
-    <!-- Main Scrollable Content -->
+    <!-- ScrollView principal -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <!-- Profile Header -->
-            <RelativeLayout
+            <!-- Encabezado con gradiente -->
+            <LinearLayout
+                android:id="@+id/headerLayout"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
-                android:background="@drawable/bg_top_perfil">
+                android:layout_height="240dp"
+                android:background="@drawable/bg_gradient_profile"
+                android:gravity="bottom|center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="40dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Profile Image Centered -->
-                <ImageView
+                <!-- Foto de perfil circular con borde -->
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imgPerfil"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="100dp"
                     android:src="@drawable/ic_defect_profile"
-                    android:contentDescription="Foto de perfil"/>
+                    android:contentDescription="Foto de perfil"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:civ_border_color="@color/color_50"
+                    app:civ_border_width="3dp"
+                    tools:ignore="MissingClass" />
+            </LinearLayout>
 
-                <!-- Name -->
-                <TextView
-                    android:id="@+id/txtNameProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/imgPerfil"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
-                    android:textColor="@color/color_50"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
-
-                <!-- Email -->
-                <TextView
-                    android:id="@+id/emailProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtNameProfile"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="8dp"
-                    android:text="usuario@gmail.com"
-                    android:textColor="@color/color_50"/>
-            </RelativeLayout>
-
-            <!-- Profile Actions Card -->
+            <!-- Contenido principal -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="-60dp"
-                android:background="@drawable/bg_color_100_card_perfil"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp"
+                app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
-                <!-- Action Buttons Row -->
+                <!-- Nombre del usuario -->
+                <TextView
+                    android:id="@+id/txtNameProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre Usuario"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_950"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"/>
+
+                <!-- Correo electrónico -->
+                <TextView
+                    android:id="@+id/emailProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="usuario@gmail.com"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_600"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="24dp"/>
+
+                <!-- Sección de acciones -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:orientation="horizontal"
+                    android:layout_marginBottom="32dp"
                     android:weightSum="3">
 
-                    <!-- Edit Profile -->
+                    <!-- Editar perfil -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -83,29 +89,34 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <FrameLayout
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@drawable/circle_bg">
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            app:cardCornerRadius="35dp"
+                            app:cardBackgroundColor="@color/color_200"
+                            app:strokeColor="@color/color_400"
+                            app:strokeWidth="1dp">
 
                             <ImageView
                                 android:id="@+id/imgEdit"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_edit"/>
-                        </FrameLayout>
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/color_800" />
+                        </com.google.android.material.card.MaterialCardView>
 
                         <TextView
                             android:id="@+id/textView11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Editar Perfil"
-                            android:textStyle="bold"/>
+                            android:text="Editar"
+                            android:textColor="@color/color_800"
+                            android:textStyle="bold"
+                            android:layout_marginTop="8dp"/>
                     </LinearLayout>
 
-                    <!-- Delete Account -->
+                    <!-- Eliminar cuenta -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -113,29 +124,34 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <FrameLayout
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@drawable/circle_bg">
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            app:cardCornerRadius="35dp"
+                            app:cardBackgroundColor="@color/color_200"
+                            app:strokeColor="@color/color_400"
+                            app:strokeWidth="1dp">
 
                             <ImageView
                                 android:id="@+id/imgDelete"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_delete"/>
-                        </FrameLayout>
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/color_800" />
+                        </com.google.android.material.card.MaterialCardView>
 
                         <TextView
                             android:id="@+id/txtDelet"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Eliminar Cuenta"
-                            android:textStyle="bold"/>
+                            android:text="Eliminar"
+                            android:textColor="@color/color_800"
+                            android:textStyle="bold"
+                            android:layout_marginTop="8dp"/>
                     </LinearLayout>
 
-                    <!-- Settings -->
+                    <!-- Ajustes -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -143,176 +159,201 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <FrameLayout
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@drawable/circle_bg">
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            app:cardCornerRadius="35dp"
+                            app:cardBackgroundColor="@color/color_200"
+                            app:strokeColor="@color/color_400"
+                            app:strokeWidth="1dp">
 
                             <ImageView
                                 android:id="@+id/imgAjustes"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_seting"/>
-                        </FrameLayout>
+                                android:src="@drawable/ic_seting"
+                                app:tint="@color/color_800" />
+                        </com.google.android.material.card.MaterialCardView>
 
                         <TextView
                             android:id="@+id/txtAJUSTES"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:text="Ajustes"
-                            android:textStyle="bold"/>
+                            android:textColor="@color/color_800"
+                            android:textStyle="bold"
+                            android:layout_marginTop="8dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Profile Details -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="@color/gray"/>
-
-                <!-- Login Type -->
-                <LinearLayout
-                    android:id="@+id/layoutTipoInicioSesion"
+                <!-- Tarjeta de información -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
-                    android:orientation="horizontal">
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/color_200"
+                    app:strokeWidth="1dp"
+                    android:layout_marginBottom="24dp">
 
-                    <TextView
-                        android:id="@+id/textView12"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:id="@+id/layoutDatos"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Inicio sesión con:"
-                        android:textColor="@color/color_800"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="GOOGLE"/>
-                </LinearLayout>
+                        <!-- Tipo de inicio de sesión -->
+                        <LinearLayout
+                            android:id="@+id/layoutTipoInicioSesion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="@color/gray"/>
+                            <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Inicio sesión con:"
+                                android:textColor="@color/color_800"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
 
-                <!-- Birthday -->
-                <LinearLayout
-                    android:id="@+id/layoutCumple"
+                            <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:text="GOOGLE"
+                                android:textColor="@color/color_600"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_200"
+                            android:layout_marginVertical="4dp"/>
+
+                        <!-- Cumpleaños -->
+                        <LinearLayout
+                            android:id="@+id/layoutCumple"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/txtCumple"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Cumpleaños:"
+                                android:textColor="@color/color_800"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txtFechaCumple"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:text="----------------"
+                                android:textColor="@color/color_600"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_200"
+                            android:layout_marginVertical="4dp"/>
+
+                        <!-- Género -->
+                        <LinearLayout
+                            android:id="@+id/layoutGenero"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/txtTituloGenero"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Género:"
+                                android:textColor="@color/color_800"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txtGenero"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:text="----------------"
+                                android:textColor="@color/color_600"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_200"
+                            android:layout_marginVertical="4dp"/>
+
+                        <!-- Nivel de lección -->
+                        <LinearLayout
+                            android:id="@+id/layoutNivelLeccion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp">
+
+                            <TextView
+                                android:id="@+id/txtTitleNivelLeccion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Nivel:"
+                                android:textColor="@color/color_800"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txtMostrarNivel"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:text="BÁSICO"
+                                android:textColor="@color/color_600"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Botón Cerrar Sesión -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txtCumple"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Cumpleaños:"
-                        android:textColor="@color/color_800"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/txtFechaCumple"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="----------------"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="@color/gray"/>
-
-                <!-- Gender -->
-                <LinearLayout
-                    android:id="@+id/layoutGenero"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txtTituloGenero"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Genero:"
-                        android:textColor="@color/color_800"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/txtGenero"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="----------------"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="@color/gray"/>
-
-                <!-- Lesson Level -->
-                <LinearLayout
-                    android:id="@+id/layoutNivelLeccion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txtTitleNivelLeccion"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Nivel de Leccion:"
-                        android:textColor="@color/color_800"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/txtMostrarNivel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="BASICO"/>
-                </LinearLayout>
+                    android:text="Cerrar Sesión"
+                    android:textAllCaps="false"
+                    android:textColor="@color/color_50"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/color_500"
+                    app:cornerRadius="8dp"
+                    app:iconTint="@color/color_50"
+                    app:iconGravity="textStart"
+                    android:layout_marginBottom="32dp"/>
             </LinearLayout>
-
-            <!-- Logout Button -->
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/bg_boton"
-                android:text="Cerrar Sesion"
-                android:textColor="@color/color_50"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

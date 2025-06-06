@@ -1,5 +1,6 @@
 package com.app.aprendequechua.fragments
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -13,8 +14,11 @@ import com.app.aprendequechua.R
 import com.app.aprendequechua.activitys.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
@@ -31,6 +35,9 @@ class PerfilFragment : Fragment() {
     private lateinit var imgDelete: ImageView
     private lateinit var authListener: FirebaseAuth.AuthStateListener
 
+    private val RC_SIGN_IN = 1001
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,7 +99,6 @@ class PerfilFragment : Fragment() {
 
     private fun redirectToLogin() {
         if (!isAdded) return
-        val context = context ?: return
         Toast.makeText(context, "Por favor, inicia sesión", Toast.LENGTH_SHORT).show()
         val intent = Intent(context, LoginActivity::class.java)
         startActivity(intent)
@@ -112,6 +118,7 @@ class PerfilFragment : Fragment() {
             displayName = profile.displayName ?: displayName
             if (displayName != "Usuario") break
         }
+
         txtNameProfile.text = displayName
         emailProfile.text = user.email ?: "Correo no disponible"
 
@@ -128,34 +135,30 @@ class PerfilFragment : Fragment() {
     }
 
     private fun loadUserProfile() {
-        val user = auth.currentUser ?: return redirectToLogin()
-        user.getIdToken(true).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                db.collection("usuarios").document(user.uid)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        if (!isAdded) return@addOnSuccessListener
-                        if (document.exists()) {
-                            txtNameProfile.text = document.getString("nombre") ?: "Nombre no disponible"
-                            emailProfile.text = document.getString("email") ?: "Correo no disponible"
-                            txtGenero.text = document.getString("genero") ?: "Género no disponible"
-                            txtFechaCumple.text = document.getString("cumpleaños") ?: "Cumpleaños no disponible"
-                        } else {
-                            Toast.makeText(context, "Datos no disponibles", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    .addOnFailureListener {
-                        if (isAdded) {
-                            Toast.makeText(context, "Error al cargar datos", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-            } else {
-                if (isAdded) {
-                    Toast.makeText(context, "Error al renovar el token", Toast.LENGTH_SHORT).show()
-                    redirectToLogin()
+        val uid = auth.currentUser?.uid
+        if (uid.isNullOrBlank()) {
+            redirectToLogin()
+            return
+        }
+
+        db.collection("usuarios").document(uid)
+            .get()
+            .addOnSuccessListener { document ->
+                if (!isAdded) return@addOnSuccessListener
+                if (document.exists()) {
+                    txtNameProfile.text = document.getString("nombre") ?: "Nombre no disponible"
+                    emailProfile.text = document.getString("email") ?: "Correo no disponible"
+                    txtGenero.text = document.getString("genero") ?: "Género no disponible"
+                    txtFechaCumple.text = document.getString("cumpleaños") ?: "Cumpleaños no disponible"
+                } else {
+                    Toast.makeText(context, "Datos no disponibles", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+            .addOnFailureListener {
+                if (isAdded) {
+                    Toast.makeText(context, "Error al cargar datos", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun showEditProfileDialog() {
@@ -229,7 +232,12 @@ class PerfilFragment : Fragment() {
             return
         }
 
-        val user = auth.currentUser ?: return
+        val uid = auth.currentUser?.uid
+        if (uid.isNullOrBlank()) {
+            redirectToLogin()
+            return
+        }
+
         val updates = mapOf(
             "nombre" to name,
             "email" to email,
@@ -237,7 +245,7 @@ class PerfilFragment : Fragment() {
             "cumpleaños" to birthday
         )
 
-        db.collection("usuarios").document(user.uid)
+        db.collection("usuarios").document(uid)
             .update(updates)
             .addOnSuccessListener {
                 if (isAdded) {
@@ -289,28 +297,103 @@ class PerfilFragment : Fragment() {
     }
 
     private fun deleteAccount() {
-        val user = auth.currentUser ?: return redirectToLogin()
+        if (!isAdded) return
+
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Eliminar Cuenta")
         builder.setMessage("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")
         builder.setPositiveButton("Sí") { _, _ ->
-            db.collection("usuarios").document(user.uid)
-                .delete()
-                .addOnSuccessListener {
-                    user.delete()
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Cuenta eliminada correctamente", Toast.LENGTH_SHORT).show()
-                            redirectToLogin()
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(context, "Error al eliminar la cuenta: ${it.message}", Toast.LENGTH_SHORT).show()
-                        }
+            reauthenticateUser(
+                onSuccess = { deleteAccountAfterReauth() },
+                onFailure = {
+                    Toast.makeText(context, "Fallo al reautenticar: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Error al eliminar los datos del usuario: ${it.message}", Toast.LENGTH_SHORT).show()
-                }
+            )
         }
         builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
         builder.create().show()
+    }
+
+    private fun reauthenticateUser(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val user = auth.currentUser ?: return
+        var isGoogleUser = false
+        for (profile in user.providerData) {
+            if (profile.providerId == "google.com") {
+                isGoogleUser = true
+                break
+            }
+        }
+        if (!isGoogleUser) {
+            // Email/Password user, no special UI needed, just proceed
+            onSuccess()
+            return
+        }
+        // For Google users, launch Google SignIn to reauthenticate
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+        startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
+        // We'll handle the rest in onActivityResult
+        this.onSuccessAfterReauth = onSuccess
+        this.onFailureAfterReauth = onFailure
+    }
+
+    private var onSuccessAfterReauth: (() -> Unit)? = null
+    private var onFailureAfterReauth: ((Exception) -> Unit)? = null
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                auth.currentUser?.reauthenticate(credential)
+                    ?.addOnSuccessListener {
+                        onSuccessAfterReauth?.invoke()
+                        clearCallbacks()
+                    }
+                    ?.addOnFailureListener {
+                        onFailureAfterReauth?.invoke(it)
+                        clearCallbacks()
+                    }
+            } catch (e: ApiException) {
+                onFailureAfterReauth?.invoke(e)
+                clearCallbacks()
+            }
+        }
+    }
+
+    private fun clearCallbacks() {
+        onSuccessAfterReauth = null
+        onFailureAfterReauth = null
+    }
+
+    private fun deleteAccountAfterReauth() {
+        val uid = auth.currentUser?.uid
+        val user = auth.currentUser
+
+        if (uid.isNullOrBlank() || user == null) {
+            redirectToLogin()
+            return
+        }
+
+        db.collection("usuarios").document(uid)
+            .delete()
+            .addOnSuccessListener {
+                user.delete()
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Cuenta eliminada correctamente", Toast.LENGTH_SHORT).show()
+                        redirectToLogin()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Error al eliminar la cuenta: ${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, "Error al eliminar datos: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }

@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import com.app.aprendequechua.R
 import com.app.aprendequechua.data.UserProgressRepository
 import com.app.aprendequechua.models.Adivinanza
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.security.SecureRandom
@@ -35,6 +36,8 @@ class AdivinanzasFragment : Fragment() {
     private lateinit var cardOption3: CardView
     private lateinit var cardOption4: CardView
     private lateinit var completionScreen: LinearLayout
+    private lateinit var txtDifficulty: Chip
+
 
     private val db = FirebaseFirestore.getInstance()
     private lateinit var userProgressRepository: UserProgressRepository
@@ -58,6 +61,8 @@ class AdivinanzasFragment : Fragment() {
         cardOption3 = view.findViewById(R.id.cardOption3)
         cardOption4 = view.findViewById(R.id.cardOption4)
         completionScreen = view.findViewById(R.id.completionScreen)
+        txtDifficulty = view.findViewById(R.id.txtDifficulty)
+
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
@@ -124,21 +129,71 @@ class AdivinanzasFragment : Fragment() {
         txtHint.visibility = View.GONE
         btnHint.visibility = View.VISIBLE
 
-        val options = listOf(
-            riddle.respuesta_correcta,
-            riddle.opcion1,
-            riddle.opcion2,
-            riddle.opcion3
-        ).shuffled()
+        // Filtrar opciones válidas (no nulas, no vacías y distintas a la respuesta correcta)
+        val opcionesDisponibles = listOf(riddle.opcion1, riddle.opcion2, riddle.opcion3, riddle.opcion4)
+            .filter { !it.isNullOrBlank() && it != riddle.respuesta_correcta }
 
-        (cardOption1.getChildAt(0) as TextView).text = options[0]
-        (cardOption2.getChildAt(0) as TextView).text = options[1]
-        (cardOption3.getChildAt(0) as TextView).text = options[2]
-        (cardOption4.getChildAt(0) as TextView).text = options[3]
+        // Crear conjunto para evitar duplicados y asegurar que respuesta correcta esté
+        val opcionesFinales = mutableSetOf<String>()
+        opcionesFinales.add(riddle.respuesta_correcta)
+        opcionesFinales.addAll(opcionesDisponibles)
 
-        resetOptionCards()
+        // Si faltan opciones para llegar a 4, rellena con placeholders
+        while (opcionesFinales.size < 4) {
+            opcionesFinales.add("...")
+        }
 
-        // Actualiza progreso con los datos correctos y maneja error:
+        // Mezclar y tomar sólo 4
+        val opcionesMezcladas = opcionesFinales.shuffled().take(4)
+
+        // Lista de cards para asignar
+        val cards = listOf(cardOption1, cardOption2, cardOption3, cardOption4)
+
+        // Asignar texto y visibilidad a cada tarjeta
+        for (i in 0 until 4) {
+            val texto = opcionesMezcladas[i]
+            val card = cards[i]
+            val tv = card.getChildAt(0) as TextView
+
+            if (texto == "...") {
+                card.visibility = View.GONE
+            } else {
+                card.visibility = View.VISIBLE
+                tv.text = texto
+            }
+
+            card.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            card.isSelected = false
+        }
+
+        // Mostrar nivel de dificultad en el Chip
+        val dificultad = riddle.dificultad?.lowercase(Locale.getDefault())
+        when {
+            dificultad.equals("fácil", ignoreCase = true) || dificultad.equals("facil", ignoreCase = true) -> {
+                txtDifficulty.text = "Fácil"
+                txtDifficulty.setChipBackgroundColorResource(R.color.color_green_light)
+                txtDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_green_dark))
+                txtDifficulty.visibility = View.VISIBLE
+            }
+            dificultad.equals("media", ignoreCase = true) -> {
+                txtDifficulty.text = "Media"
+                txtDifficulty.setChipBackgroundColorResource(R.color.color_blue_light)
+                txtDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_blue_dark))
+                txtDifficulty.visibility = View.VISIBLE
+            }
+            dificultad.equals("difícil", ignoreCase = true) || dificultad.equals("dificil", ignoreCase = true) -> {
+                txtDifficulty.text = "Difícil"
+                txtDifficulty.setChipBackgroundColorResource(R.color.color_red_light)
+                txtDifficulty.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_red_dark))
+                txtDifficulty.visibility = View.VISIBLE
+            }
+            else -> {
+                txtDifficulty.visibility = View.GONE
+            }
+        }
+
+
+        // Actualiza progreso
         userProgressRepository.updateUserProgress(
             userId = userId,
             type = "adivinanzas",
@@ -149,6 +204,8 @@ class AdivinanzasFragment : Fragment() {
             }
         )
     }
+
+
 
     private fun verifyAnswer(selectedAnswer: String) {
         val correctAnswer = dailyRiddles[currentRiddleIndex].respuesta_correcta

@@ -5,6 +5,16 @@
     <color name="red">#FFC62828</color>
     <color name="gray">#FF9E9E9E</color>
     <color name="green">#4CAF50</color>
+    <color name="blue">#2196F3</color>
+
+    <color name="color_green_light">#E8F5E9</color>
+    <color name="color_green_dark">#2E7D32</color>
+
+    <color name="color_blue_light">#E3F2FD</color>
+    <color name="color_blue_dark">#1565C0</color>
+
+    <color name="color_red_light">#FFEBEE</color>
+    <color name="color_red_dark">#C62828</color>
 
 
     //Paleta color app
