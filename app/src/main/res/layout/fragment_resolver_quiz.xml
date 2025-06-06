@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_100"
-    tools:context=".QuizBasicoActivity">
+    tools:context=".ResolverQuizFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -38,6 +38,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/quizContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -67,9 +68,10 @@
                         app:tint="@color/green" />
 
                     <TextView
+                        android:id="@+id/txtMostrarTotalQuizzes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="5 preguntas disponibles"
+                        android:text="Cargando..."
                         android:textColor="@color/color_950"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -101,6 +103,7 @@
                         android:layout_marginBottom="12dp">
 
                         <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_dificultad"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Básico"
@@ -160,13 +163,6 @@
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/color_500"/>
 
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Yaku"
-                                    android:textColor="@color/color_950"
-                                    android:textSize="16sp"
-                                    android:layout_marginStart="8dp"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -191,13 +187,6 @@
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/color_500"/>
 
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Sumaq"
-                                    android:textColor="@color/color_950"
-                                    android:textSize="16sp"
-                                    android:layout_marginStart="8dp"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -222,13 +211,6 @@
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/color_500"/>
 
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Wasi"
-                                    android:textColor="@color/color_950"
-                                    android:textSize="16sp"
-                                    android:layout_marginStart="8dp"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
@@ -252,14 +234,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/color_500"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Inti"
-                                    android:textColor="@color/color_950"
-                                    android:textSize="16sp"
-                                    android:layout_marginStart="8dp"/>
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
                     </RadioGroup>
@@ -273,9 +247,7 @@
                         android:background="@color/color_50"
                         android:padding="12dp"
                         android:visibility="gone"
-                        android:layout_marginTop="12dp"
-                        app:strokeColor="@color/color_200"
-                        app:strokeWidth="1dp">
+                        android:layout_marginTop="12dp">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -287,7 +259,7 @@
                             android:id="@+id/text_pista"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Empieza con 'Y'."
+                            android:text="Empieza con "
                             android:textColor="@color/color_700"
                             android:textSize="14sp"
                             android:layout_marginStart="8dp"/>
@@ -342,6 +314,43 @@
                 app:trackColor="@color/color_200"
                 app:indicatorColor="@color/green"/>
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/completionScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="24dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_trophy"
+            app:tint="@color/green"/>
+
+        <TextView
+            android:id="@+id/text_final_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Has completado el quiz con 5/5 aciertos!"
+            android:textColor="@color/green"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:gravity="center"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReturn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver a intentar"
+            android:layout_marginTop="24dp"
+            app:backgroundTint="@color/green"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
