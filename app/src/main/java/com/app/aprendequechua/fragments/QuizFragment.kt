@@ -26,6 +26,9 @@ class QuizFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val IrQuizBasico = view.findViewById<Chip>(R.id.IrQuizBasico)
+        val IrQuizIntermedio = view.findViewById<Chip>(R.id.IrQuizIntermedio)
+        val IrQuizAvanzado = view.findViewById<Chip>(R.id.IrQuizAvanzado)
+
         db = FirebaseFirestore.getInstance()
 
         // Consultar la cantidad de quizzes disponibles
@@ -41,6 +44,20 @@ class QuizFragment : Fragment() {
         IrQuizBasico.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, ResolverQuizFragment())
+                .addToBackStack(null) // Para que pueda regresar con el botón atrás
+                .commit()
+        }
+        // Configurar el clic en el Chip
+        IrQuizIntermedio.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, ResolverQuizIntermedioFragment())
+                .addToBackStack(null) // Para que pueda regresar con el botón atrás
+                .commit()
+        }
+        // Configurar el clic en el Chip
+        IrQuizAvanzado.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, ResolverQuizAvanzadoFragment())
                 .addToBackStack(null) // Para que pueda regresar con el botón atrás
                 .commit()
         }

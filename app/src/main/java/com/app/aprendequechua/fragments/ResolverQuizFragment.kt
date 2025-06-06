@@ -192,7 +192,7 @@ class ResolverQuizFragment : Fragment() {
             incorrectAnswers++
             Toast.makeText(
                 context,
-                "❌ Respuesta incorrecta. La respuesta era: ${quiz.respuesta_correcta}",
+                "❌Respuesta incorrecta. La respuesta era: ${quiz.respuesta_correcta}",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -206,7 +206,7 @@ class ResolverQuizFragment : Fragment() {
             } else {
                 mostrarPantallaFinal()
             }
-        }, 2000)
+        }, 1000)
     }
 
     private fun mostrarPantallaFinal() {

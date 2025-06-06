@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_100"
-    tools:context=".fragments.ResolverQuizFragment">
+    tools:context=".fragments.ResolverQuizAvanzadoFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quizzes Básicos de Quechua"
+                android:text="Quizzes Avanzadas de Quechua"
                 android:textColor="@color/color_950"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -51,7 +51,7 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:strokeColor="@color/green"
+                app:strokeColor="@color/red"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -65,7 +65,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/ic_quiz_green"
-                        app:tint="@color/green" />
+                        app:tint="@color/red" />
 
                     <TextView
                         android:id="@+id/txtMostrarTotalQuizzes"
@@ -106,9 +106,9 @@
                             android:id="@+id/chip_dificultad"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            app:chipBackgroundColor="@color/color_green_light"
-                            android:textColor="@color/green"/>
+                            android:text="Avanzada"
+                            app:chipBackgroundColor="@color/color_red_light"
+                            android:textColor="@color/red"/>
 
                         <View
                             android:layout_width="0dp"
@@ -276,7 +276,7 @@
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:textColor="@android:color/white"
-                app:backgroundTint="@color/green"
+                app:backgroundTint="@color/red"
                 app:cornerRadius="8dp"
                 android:layout_marginTop="8dp"
                 app:icon="@drawable/ic_check"
