@@ -173,7 +173,8 @@ class LoginActivity : AppCompatActivity() {
                                     "nombre" to (user.displayName ?: "Sin nombre"),
                                     "email" to (user.email ?: ""),
                                     "genero" to "",
-                                    "cumpleaños" to ""
+                                    "cumpleaños" to "",
+                                    "fotoPerfil" to (user.photoUrl?.toString() ?: "")
                                 )
                                 userRef.set(nuevoUsuario)
                                     .addOnSuccessListener {

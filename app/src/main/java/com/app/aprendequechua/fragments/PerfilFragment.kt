@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.aprendequechua.R
 import com.app.aprendequechua.activitys.LoginActivity
 import com.app.aprendequechua.adapters.AvatarAdapter
+import com.app.aprendequechua.adapters.AvatarSpacingDecoration
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -464,10 +465,13 @@ class PerfilFragment : Fragment() {
         val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerViewAvatars)
         recyclerView.layoutManager = GridLayoutManager(context, 3) // Mostrar 3 columnas
 
+        // Agregar el decorador de espaciado
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.avatar_spacing)
+        recyclerView.addItemDecoration(AvatarSpacingDecoration(spacingInPixels))
+
         // Cargar avatares desde Firebase
         loadAvatars { avatars ->
             val adapter = AvatarAdapter(avatars) { selectedAvatar ->
-                // Actualizar la imagen de perfil con el avatar seleccionado
                 updateProfileImage(selectedAvatar)
                 dialog.dismiss()
             }
@@ -480,6 +484,15 @@ class PerfilFragment : Fragment() {
     // Cargar la lista de avatares desde Firestore
     private fun loadAvatars(onSuccess: (List<String>) -> Unit) {
         val avatarUrls = mutableListOf<String>()
+
+        // Obtener la foto de perfil de Google si está disponible
+        val user = FirebaseAuth.getInstance().currentUser
+        val googlePhotoUrl = user?.photoUrl?.toString()
+        if (!googlePhotoUrl.isNullOrBlank()) {
+            avatarUrls.add(googlePhotoUrl) // Agregar la foto de perfil de Google
+        }
+
+        // Cargar avatares desde Firestore
         db.collection("avatars")
             .get()
             .addOnSuccessListener { querySnapshot ->
@@ -489,7 +502,7 @@ class PerfilFragment : Fragment() {
                         avatarUrls.add(avatarUrl)
                     }
                 }
-                onSuccess(avatarUrls)
+                onSuccess(avatarUrls) // Devolver la lista completa de avatares
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Error al cargar avatares: ${exception.message}", Toast.LENGTH_SHORT).show()
@@ -498,53 +511,77 @@ class PerfilFragment : Fragment() {
 
     // Cargar el avatar desde Firestore
     private fun loadProfileImage() {
-        val userId = auth.currentUser?.uid
+        val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
+
         if (userId != null) {
             db.collection("usuarios").document(userId)
                 .get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         val profileImageUrl = document.getString("profileImageUrl")
-                        if (profileImageUrl != null) {
+                        if (!profileImageUrl.isNullOrEmpty()) {
+                            // Si existe url en Firestore, cargarla
                             Glide.with(this)
                                 .load(profileImageUrl)
                                 .placeholder(R.drawable.ic_defect_profile)
                                 .into(imgPerfil)
                         } else {
-                            // Si no hay URL, usar una imagen predeterminada
+                            // Si no existe url en Firestore, cargar foto de Google si existe
+                            val googlePhotoUrl = user.photoUrl?.toString()
+                            if (!googlePhotoUrl.isNullOrEmpty()) {
+                                Glide.with(this)
+                                    .load(googlePhotoUrl)
+                                    .placeholder(R.drawable.ic_defect_profile)
+                                    .into(imgPerfil)
+                            } else {
+                                // Finalmente, imagen por defecto
+                                Glide.with(this)
+                                    .load(R.drawable.ic_defect_profile)
+                                    .into(imgPerfil)
+                            }
+                        }
+                    } else {
+                        // Documento no existe, intentar cargar foto de Google
+                        val googlePhotoUrl = user.photoUrl?.toString()
+                        if (!googlePhotoUrl.isNullOrEmpty()) {
+                            Glide.with(this)
+                                .load(googlePhotoUrl)
+                                .placeholder(R.drawable.ic_defect_profile)
+                                .into(imgPerfil)
+                        } else {
                             Glide.with(this)
                                 .load(R.drawable.ic_defect_profile)
                                 .into(imgPerfil)
                         }
-                    } else {
-                        // Si no hay documento, usar una imagen predeterminada
-                        Glide.with(this)
-                            .load(R.drawable.ic_defect_profile)
-                            .into(imgPerfil)
                     }
                 }
                 .addOnFailureListener { exception ->
                     Toast.makeText(context, "Error al cargar el avatar: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
-            // Si no hay usuario autenticado, usar una imagen predeterminada
+            // No hay usuario autenticado
             Glide.with(this)
                 .load(R.drawable.ic_defect_profile)
                 .into(imgPerfil)
         }
     }
 
+
     // Actualizar el avatar en Firestore y en la interfaz
     private fun updateProfileImage(avatarUrl: String) {
-        val userId = auth.currentUser?.uid
+        val imgPerfil = requireView().findViewById<CircleImageView>(R.id.imgPerfil)
+        Glide.with(this)
+            .load(avatarUrl)
+            .placeholder(R.drawable.ic_defect_profile)
+            .into(imgPerfil)
+
+        // Guardar la URL del avatar en Firestore
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null) {
             db.collection("usuarios").document(userId)
                 .update("profileImageUrl", avatarUrl)
                 .addOnSuccessListener {
-                    Glide.with(this)
-                        .load(avatarUrl)
-                        .placeholder(R.drawable.ic_defect_profile)
-                        .into(imgPerfil)
                     Toast.makeText(context, "Avatar actualizado correctamente.", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { exception ->
@@ -552,10 +589,6 @@ class PerfilFragment : Fragment() {
                     db.collection("usuarios").document(userId)
                         .set(mapOf("profileImageUrl" to avatarUrl), SetOptions.merge())
                         .addOnSuccessListener {
-                            Glide.with(this)
-                                .load(avatarUrl)
-                                .placeholder(R.drawable.ic_defect_profile)
-                                .into(imgPerfil)
                             Toast.makeText(context, "Avatar actualizado correctamente.", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { innerException ->

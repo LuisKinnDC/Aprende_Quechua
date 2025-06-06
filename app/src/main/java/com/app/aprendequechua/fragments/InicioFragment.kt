@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.app.aprendequechua.R
 import com.app.aprendequechua.data.UserProgressRepository
+import com.app.aprendequechua.viewmodels.SharedViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
@@ -20,6 +22,7 @@ class InicioFragment : Fragment() {
 
     private lateinit var profileImage: de.hdodenhof.circleimageview.CircleImageView
 
+    private lateinit var sharedViewModel: SharedViewModel
 
     // Constante para el tipo de desafío
     private val CHALLENGE_TYPE = "daily_challenges"
@@ -58,6 +61,8 @@ class InicioFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         userProgressRepository = UserProgressRepository()
         profileImage = view.findViewById(R.id.profileImage)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
 
 
         textViewSaludo = view.findViewById(R.id.txtSaludo)
@@ -80,6 +85,14 @@ class InicioFragment : Fragment() {
         setupAdivinanzasClickListener()
         loadProfileImage()
 
+        // Observar cambios en el avatar
+        sharedViewModel.avatarUrl.observe(viewLifecycleOwner) { newAvatarUrl ->
+            Glide.with(this)
+                .load(newAvatarUrl)
+                .placeholder(R.drawable.ic_defect_profile)
+                .into(profileImage)
+        }
+
 
         return view
     }
@@ -91,18 +104,46 @@ class InicioFragment : Fragment() {
 
     private fun loadProfileImage() {
         val user = FirebaseAuth.getInstance().currentUser
-        val photoUrl = user?.photoUrl
 
-        if (photoUrl != null && isAdded) {
+        // Primero, intenta cargar la foto de Google si está disponible
+        val googlePhotoUrl = user?.photoUrl?.toString()
+
+        if (!googlePhotoUrl.isNullOrBlank()) {
+            // Cargar la foto de Google directamente
             Glide.with(this)
-                .load(photoUrl)
+                .load(googlePhotoUrl)
                 .placeholder(R.drawable.ic_defect_profile)
-                .error(R.drawable.ic_defect_profile)
                 .into(profileImage)
         } else {
-            profileImage.setImageResource(R.drawable.ic_defect_profile)
+            // Si no hay foto de Google, cargar la imagen predeterminada por ahora
+            Glide.with(this)
+                .load(R.drawable.ic_defect_profile)
+                .into(profileImage)
+        }
+
+        // Opcional: después puedes actualizar la imagen con la URL guardada en Firestore (si quieres)
+        val userId = user?.uid
+        if (userId != null) {
+            db.collection("usuarios").document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val profileImageUrl = document.getString("profileImageUrl")
+                        if (!profileImageUrl.isNullOrBlank()) {
+                            // Sobrescribir la imagen con la que está guardada en Firestore
+                            Glide.with(this)
+                                .load(profileImageUrl)
+                                .placeholder(R.drawable.ic_defect_profile)
+                                .into(profileImage)
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(context, "Error al cargar el avatar: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
+
 
 
     private fun setupUserName() {
