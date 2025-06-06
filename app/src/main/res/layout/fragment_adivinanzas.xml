@@ -73,7 +73,7 @@
                         android:id="@+id/txtAdivinanza"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Blanca por dentro, verde por fuera. Si quieres que te lo diga, espera."
+                        android:text=""
                         android:textColor="@color/color_950"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -114,7 +114,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:text="limón"
+                        android:text=""
                         android:textColor="@color/color_950"
                         android:textSize="16sp"
                         android:gravity="center"
@@ -134,7 +134,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:text="manzana"
+                        android:text=""
                         android:textColor="@color/color_950"
                         android:textSize="16sp"
                         android:gravity="center"
@@ -154,7 +154,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:text="uva"
+                        android:text=""
                         android:textColor="@color/color_950"
                         android:textSize="16sp"
                         android:gravity="center"
@@ -173,7 +173,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:text="pera"
+                        android:text=""
                         android:textColor="@color/color_950"
                         android:textSize="16sp"
                         android:gravity="center"

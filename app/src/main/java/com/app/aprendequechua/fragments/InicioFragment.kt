@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.aprendequechua.R
+import com.app.aprendequechua.activitys.DashboardActivity
 import com.app.aprendequechua.data.UserProgressRepository
 import com.app.aprendequechua.viewmodels.SharedViewModel
 import com.bumptech.glide.Glide
@@ -15,6 +16,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -91,6 +93,18 @@ class InicioFragment : Fragment() {
                 .load(newAvatarUrl)
                 .placeholder(R.drawable.ic_defect_profile)
                 .into(profileImage)
+        }
+
+        val profileImage = view.findViewById<CircleImageView>(R.id.profileImage)
+        profileImage.setOnClickListener {
+            // Cambiar al PerfilFragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, PerfilFragment())
+                .addToBackStack(null)
+                .commit()
+
+            // Notificar a la actividad para actualizar la barra de navegación
+            (activity as? DashboardActivity)?.selectProfileMenuItem()
         }
 
 

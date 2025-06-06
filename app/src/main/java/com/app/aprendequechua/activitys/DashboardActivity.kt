@@ -56,5 +56,11 @@ class DashboardActivity : AppCompatActivity() {
             .commit()
     }
 
+    fun selectProfileMenuItem() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.selectedItemId = R.id.perfilFragment
+    }
+
+
 
 }
