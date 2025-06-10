@@ -83,7 +83,7 @@
                     android:id="@+id/txtNameProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nombre Usuario"
+                    android:text="Cargando usuario..."
                     android:textAlignment="center"
                     android:textColor="@color/color_950"
                     android:textSize="24sp"
@@ -291,7 +291,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="end"
-                                android:text="----------------"
+                                android:text="Cargando.."
                                 android:textColor="@color/color_600"/>
                         </LinearLayout>
 
@@ -326,7 +326,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="end"
-                                android:text="----------------"
+                                android:text="Cargando..."
                                 android:textColor="@color/color_600"/>
                         </LinearLayout>
 

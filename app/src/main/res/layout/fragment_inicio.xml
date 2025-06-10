@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Nombre Usuario"
+                        android:text="Cargando nombre de usuario..."
                         android:textColor="@color/color_50"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
@@ -88,7 +88,7 @@
                             android:id="@+id/contadorProgeso"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
+                            android:text="Cargando..."
                             android:textColor="@color/color_600"
                             android:textSize="16sp"
                             android:textStyle="bold"/>
@@ -359,7 +359,7 @@
                         android:id="@+id/txtTituloPregunta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Traduce esta frase"
+                        android:text="Cargando titulo..."
                         android:textColor="@color/color_600"
                         android:textSize="14sp"/>
                     <!-- Pregunta del Desafío -->
@@ -368,7 +368,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="¿Cómo estás hoy?"
+                        android:text="Cargando pregunta..."
                         android:textColor="@color/color_950"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
