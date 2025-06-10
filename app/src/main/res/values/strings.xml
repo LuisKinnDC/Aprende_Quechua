@@ -12,4 +12,8 @@
         <item>Mujer</item>
         <item>Otro</item>
     </string-array>
+
+    <string name="no_results_found">No se encontraron resultados</string>
+    <string name="no_results_title">No hay palabras aún</string>
+    <string name="no_results_subtitle">Intenta con otra búsqueda o agrega nuevos términos</string>
 </resources>
