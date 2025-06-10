@@ -105,14 +105,31 @@
                             android:background="@color/color_200"
                             android:layout_marginTop="8dp"/>
 
-                        <TextView
-                            android:id="@+id/txtVerJuegoQuiz"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Ver juegos"
-                            android:textColor="@color/color_800"
-                            android:textSize="14sp"
-                            android:layout_marginTop="8dp"/>
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <TextView
+                                android:id="@+id/txtVerJuegoQuiz"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ver juegos"
+                                android:textColor="@color/color_800"
+                                android:textSize="14sp"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="4dp"
+                                android:src="@drawable/ic_arrow_right"
+                                app:tint="@color/color_800" />
+                        </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -169,19 +186,114 @@
                             android:background="@color/color_200"
                             android:layout_marginTop="8dp"/>
 
-                        <TextView
-                            android:id="@+id/txtVerJuegoRompecabezas"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Ver juegos"
-                            android:textColor="@color/color_800"
-                            android:textSize="14sp"
-                            android:layout_marginTop="8dp"/>
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <TextView
+                                android:id="@+id/txtVerJuegoRompecabezas"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ver juegos"
+                                android:textColor="@color/color_800"
+                                android:textSize="14sp"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="4dp"
+                                android:src="@drawable/ic_arrow_right"
+                                app:tint="@color/color_800" />
+                        </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Puedes añadir más categorías aquí con el mismo patrón -->
+            <!-- Categoría Memoramas -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_memorama"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/color_300"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_brain"
+                        app:tint="@color/color_700" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Memoramas"
+                            android:textColor="@color/color_950"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Desarrolla tu retención de datos"
+                            android:textColor="@color/color_600"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_200"
+                            android:layout_marginTop="8dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <TextView
+                                android:id="@+id/txtVerJuegoMemoramas"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ver juegos"
+                                android:textColor="@color/color_800"
+                                android:textSize="14sp"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="4dp"
+                                android:src="@drawable/ic_arrow_right"
+                                app:tint="@color/color_800" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

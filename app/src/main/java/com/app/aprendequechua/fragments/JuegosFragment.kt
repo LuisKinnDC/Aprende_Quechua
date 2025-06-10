@@ -16,10 +16,18 @@ class JuegosFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_juegos, container, false)
 
         val txtVerJuegoQuiz = view.findViewById<View>(R.id.txtVerJuegoQuiz)
+        val txtVerJuegoMemoramas = view.findViewById<View>(R.id.txtVerJuegoMemoramas)
 
         txtVerJuegoQuiz.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, QuizFragment())
+                .addToBackStack(null) // Para que pueda regresar con el botón atrás
+                .commit()
+        }
+
+        txtVerJuegoMemoramas.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, MemoramasFragment())
                 .addToBackStack(null) // Para que pueda regresar con el botón atrás
                 .commit()
         }
