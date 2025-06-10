@@ -32,13 +32,19 @@ class QuizFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         // Consultar la cantidad de quizzes disponibles
-        loadQuizCount { quizCount ->
-            if (quizCount != null) {
-                IrQuizBasico.text = "$quizCount quizzes disponibles"
-            } else {
-                IrQuizBasico.text = "No hay quizzes disponibles"
-            }
+        loadQuizCountFromCollection("quizzes_basico") { count ->
+            IrQuizBasico.text = count?.let { "$it quizzes disponibles" } ?: "No hay quizzes disponibles"
         }
+
+        loadQuizCountFromCollection("quizzes_intermedio") { count ->
+            IrQuizIntermedio.text = count?.let { "$it quizzes disponibles" } ?: "No hay quizzes disponibles"
+        }
+
+        loadQuizCountFromCollection("quizzes_avanzado") { count ->
+            IrQuizAvanzado.text = count?.let { "$it quizzes disponibles" } ?: "No hay quizzes disponibles"
+        }
+
+
 
         // Configurar el clic en el Chip
         IrQuizBasico.setOnClickListener {
@@ -63,16 +69,22 @@ class QuizFragment : Fragment() {
         }
     }
 
-    private fun loadQuizCount(onSuccess: (Int?) -> Unit) {
-        db.collection("quizzes_basico") // Asegúrate de que esta sea la colección correcta
+    // Función para cargar la cantidad de quizzes disponibles
+    private fun loadQuizCountFromCollection(
+        collectionName: String,
+        onResult: (Int?) -> Unit
+    ) {
+        db.collection(collectionName)
             .get()
             .addOnSuccessListener { querySnapshot ->
-                val quizCount = querySnapshot.size()
-                onSuccess(quizCount)
+                onResult(querySnapshot.size())
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(context, "Error al cargar quizzes: ${exception.message}", Toast.LENGTH_SHORT).show()
-                onSuccess(null)
+                Toast.makeText(context, "Error al cargar quizzes de $collectionName: ${exception.message}", Toast.LENGTH_SHORT).show()
+                onResult(null)
             }
     }
+
+
+
 }

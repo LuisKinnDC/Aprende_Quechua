@@ -106,7 +106,7 @@ tools:context=".fragments.ResolverQuizIntermedioFragment">
                         android:id="@+id/chip_dificultad"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Intermedio"
+                        android:text="Cargando..."
                         app:chipBackgroundColor="@color/color_blue_light"
                         android:textColor="@color/blue"/>
 
@@ -120,8 +120,8 @@ tools:context=".fragments.ResolverQuizIntermedioFragment">
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/ic_lightbulb_outline"
-                        android:contentDescription="Pista"
-                        app:tint="@color/color_500" />
+                        app:tint="@color/blue"
+                        android:contentDescription="Pista" />
                 </LinearLayout>
 
                 <!-- Texto de la pregunta -->
@@ -244,7 +244,7 @@ tools:context=".fragments.ResolverQuizIntermedioFragment">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/color_50"
+                    android:background="@color/color_blue_light"
                     android:padding="12dp"
                     android:visibility="gone"
                     android:layout_marginTop="12dp">
@@ -253,14 +253,14 @@ tools:context=".fragments.ResolverQuizIntermedioFragment">
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_info"
-                        app:tint="@color/color_500" />
+                        app:tint="@color/color_blue_dark" />
 
                     <TextView
                         android:id="@+id/text_pista"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Empieza con "
-                        android:textColor="@color/color_700"
+                        android:textColor="@color/color_blue_dark"
                         android:textSize="14sp"
                         android:layout_marginStart="8dp"/>
                 </LinearLayout>
