@@ -13,8 +13,14 @@ class DictionaryAdapter(
     private var palabras: List<Palabra>,
     private val onAudioClick: (String) -> Unit,
     private val onFavoriteClick: (Palabra, Boolean) -> Unit
-) : RecyclerView.Adapter<DictionaryAdapter.WordViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    companion object {
+        private const val TYPE_EMPTY = 0
+        private const val TYPE_ITEM = 1
+    }
+
+    // ViewHolder para items normales
     inner class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val txtPalabraQuechua: TextView = itemView.findViewById(R.id.txtPalabraQuechua)
         private val txtSignificado: TextView = itemView.findViewById(R.id.txtSignificado)
@@ -29,32 +35,57 @@ class DictionaryAdapter(
             txtEjemploQuechua.text = palabra.ejemploQuechua
             txtEjemploEspanol.text = palabra.ejemploEspanol
 
-            // Configurar favorito
             btnFavorite.setImageResource(
                 if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
             btnFavorite.setOnClickListener {
                 onFavoriteClick(palabra, !isFavorite)
             }
 
-            // Configurar audio
             btnAudio.setOnClickListener {
-                onAudioClick(palabra.urlPronunciacion)
+                palabra.urlPronunciacion?.let { url -> onAudioClick(url) }
             }
         }
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dictionary_result, parent, false)
-        return WordViewHolder(view)
+    // ViewHolder para estado vacío
+    inner class EmptyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        // Puedes agregar referencias a los elementos del layout de estado vacío si necesitas interactuar con ellos
     }
 
-    override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        val palabra = palabras[position]
-        holder.bind(palabra, palabra.isFavorite)
+    override fun getItemViewType(position: Int): Int {
+        return if (palabras.isEmpty()) TYPE_EMPTY else TYPE_ITEM
     }
 
-    override fun getItemCount(): Int = palabras.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_EMPTY -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_empty_state, parent, false)
+                EmptyViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_dictionary_result, parent, false)
+                WordViewHolder(view)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is WordViewHolder -> {
+                val palabra = palabras[position]
+                holder.bind(palabra, palabra.isFavorite)
+            }
+            is EmptyViewHolder -> {
+                // Puedes configurar elementos del estado vacío aquí si es necesario
+            }
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return if (palabras.isEmpty()) 1 else palabras.size
+    }
 
     fun submitList(newList: List<Palabra>) {
         palabras = newList
