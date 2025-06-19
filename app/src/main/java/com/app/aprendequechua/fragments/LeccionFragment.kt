@@ -1,38 +1,102 @@
 package com.app.aprendequechua.fragments
 
-import android.animation.AnimatorInflater
-import android.animation.AnimatorSet
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.*
+import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.cardview.widget.CardView
-import androidx.navigation.fragment.findNavController
 import com.app.aprendequechua.R
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LeccionFragment : Fragment() {
 
-    private var isFront = true
+    private lateinit var containerLecciones: LinearLayout
+    private lateinit var db: FirebaseFirestore
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_leccion, container, false)
 
+        // Retroceso
         view.findViewById<MaterialToolbar>(R.id.toolbar).setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        // Inicializar Firestore y contenedor
+        db = FirebaseFirestore.getInstance()
+        containerLecciones = view.findViewById(R.id.containerLecciones)
 
+        // Cargar lecciones desde Firestore
+        cargarLeccionesDesdeFirestore(inflater)
 
         return view
     }
 
+    private fun cargarLeccionesDesdeFirestore(inflater: LayoutInflater) {
+        db.collection("lecciones_basico").get()
+            .addOnSuccessListener { documentos ->
+                for (doc in documentos) {
+                    val titulo = doc.getString("titulo") ?: "Sin título"
+                    val descripcion = doc.getString("descripcion") ?: "Sin descripción"
+                    val icono = doc.getString("icono") ?: "ic_lesson"
+                    val completado = doc.getBoolean("completado") ?: false
+
+                    // Inflar la vista de la lección
+                    val itemView = inflater.inflate(R.layout.item_leccion, containerLecciones, false)
+
+                    val txtTitulo = itemView.findViewById<TextView>(R.id.txtTituloLeccion)
+                    val txtDescripcion = itemView.findViewById<TextView>(R.id.txtDescripcionLeccion)
+                    val imgIconoLeccion = itemView.findViewById<ImageView>(R.id.imgIconoLeccion)
+                    val imgEstado = itemView.findViewById<ImageView>(R.id.imgEstadoLeccion)
+                    val btnPracticar = itemView.findViewById<MaterialButton>(R.id.btnPracticar)
+
+                    txtTitulo.text = titulo
+                    txtDescripcion.text = descripcion
+
+                    // Cargar ícono personalizado (ej: ic_lesson_7)
+                    val iconResId = resources.getIdentifier(icono, "drawable", requireContext().packageName)
+                    if (iconResId != 0) {
+                        imgIconoLeccion.setImageResource(iconResId)
+                    } else {
+                        imgIconoLeccion.setImageResource(R.drawable.ic_lesson_1) // Fallback
+                    }
+
+                    // Estado de completado/bloqueado
+                    if (completado) {
+                        imgEstado.setImageResource(R.drawable.ic_check_circle)
+                        btnPracticar.isEnabled = true
+                        btnPracticar.text = "Practicar"
+                        btnPracticar.setBackgroundTintList(
+                            ContextCompat.getColorStateList(requireContext(), R.color.color_600)
+                        )
+                    } else {
+                        imgEstado.setImageResource(R.drawable.ic_lock)
+                        btnPracticar.isEnabled = false
+                        btnPracticar.text = "Bloqueado"
+                        btnPracticar.setBackgroundTintList(
+                            ContextCompat.getColorStateList(requireContext(), R.color.color_300)
+                        )
+                    }
+
+                    // Acción del botón "Practicar"
+                    btnPracticar.setOnClickListener {
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, EjerciciosBasicosFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+
+                    containerLecciones.addView(itemView)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Error al cargar lecciones", Toast.LENGTH_SHORT).show()
+            }
+    }
 }
