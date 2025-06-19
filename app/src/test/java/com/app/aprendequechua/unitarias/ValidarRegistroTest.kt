@@ -1,7 +1,8 @@
-package com.app.aprendequechua
+package com.app.aprendequechua.unitarias
 
 import com.app.aprendequechua.utils.ValidacionRegistro
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ValidarRegistroTest {

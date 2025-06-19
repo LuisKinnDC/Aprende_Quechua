@@ -55,38 +55,31 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    dependencies {
-        // Unit tests
-        testImplementation("junit:junit:4.13.2")
+    // ✅ Solo JUnit 4
+    testImplementation("junit:junit:4.13.2")
 
-        // Mockito para mocks
-        testImplementation ("org.mockito:mockito-core:4.8.0")
+    // Mockito Core + Kotlin Extensions
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 
-        // Para pruebas con Kotlin + Mockito
-        testImplementation ("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    // Corutinas para pruebas asincrónicas
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
-        androidTestImplementation ("androidx.test.espresso:espresso-contrib:3.5.0")
+    // Robolectric - para probar código Android sin dispositivo/emulador
+    testImplementation("org.robolectric:robolectric:4.9")
 
-        // Instrumented tests
-        androidTestImplementation("androidx.test.ext:junit:1.1.5")
-        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
-        androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.0")
+    // Android Instrumented tests
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.0")
 
-
-
-    }
-
-    // Para pruebas unitarias
-    testImplementation ("junit:junit:4.13.2")
-    testImplementation ("org.mockito:mockito-core:4.11.0")
-
-    // Para pruebas instrumentadas
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-
-    implementation ("com.google.android.material:material:1.6.0")
-
+    // Otros
+    implementation("com.google.android.material:material:1.6.0")
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(libs.core.ktx)
     implementation(libs.androidx.ui.test.android)
+    testImplementation(kotlin("test"))
 }
+
+

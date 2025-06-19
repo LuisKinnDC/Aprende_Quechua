@@ -1,4 +1,4 @@
-package com.app.aprendequechua
+package com.app.aprendequechua.unitarias
 
 import com.app.aprendequechua.utils.LoginValidator
 import org.junit.Assert.*

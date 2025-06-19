@@ -20,28 +20,24 @@ class RegisterActivityTest {
     @Test
     fun alRegistrarUsuario() {
 
-        // Navegar desde SplashActivity hasta Register
         onView(withId(R.id.txtIniciarAhora)).perform(click())
+
         onView(withId(R.id.btnCrear)).perform(click())
 
-        // Llenar formulario
-        onView(withId(R.id.editTextName)).perform(typeText("Juan"))
-        onView(withId(R.id.editTextEmail)).perform(typeText("jjan101@gmail.com"))
-        onView(withId(R.id.editTextContrasena)).perform(typeText("123456"))
-        onView(withId(R.id.editTextConfContrasena)).perform(typeText("123456"))
+
+        onView(withId(R.id.editTextName)).perform(typeText("Juan"), closeSoftKeyboard())
+        onView(withId(R.id.editTextEmail)).perform(typeText("jan101@gmail.com"), closeSoftKeyboard())
+        onView(withId(R.id.editTextContrasena)).perform(typeText("123456"), closeSoftKeyboard())
+        onView(withId(R.id.editTextConfContrasena)).perform(typeText("123456"), closeSoftKeyboard())
         closeSoftKeyboard()
 
-        // Registrar
+
         onView(withId(R.id.buttonRegistro)).perform(click())
 
-        // Verificar que estamos en DashboardActivity
-        //intended(hasComponent(DashboardActivity::class.java.name))
+        Thread.sleep(5000)
 
-        // Esperar a que el fragmento cargue
-       Thread.sleep(3000)
 
-        // Validar saludo
+        onView(withId(R.id.txtSaludo)).check(matches(isDisplayed()))
         onView(withId(R.id.txtSaludo)).check(matches(withText("Hola, Buenos días!")))
     }
-
 }

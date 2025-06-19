@@ -13,19 +13,15 @@ data class DailyChallenge(
     val dificultad: String = ""
 )
 
-class ChallengeRepository {
+class ChallengeRepository(
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+) {
 
-    private val firestore = FirebaseFirestore.getInstance()
     private val challengesCollection = firestore.collection("daily_challenges")
 
-    // Obtener un desafío aleatorio
     suspend fun getRandomChallenge(): DailyChallenge? {
         return try {
-            val querySnapshot = challengesCollection
-                .get()
-                .await()
-
-            // Seleccionar un documento aleatorio
+            val querySnapshot = challengesCollection.get().await()
             val documents = querySnapshot.documents
             if (documents.isNotEmpty()) {
                 val randomIndex = (0 until documents.size).random()

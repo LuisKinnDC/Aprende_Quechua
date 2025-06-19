@@ -5,11 +5,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UserProgressRepository {
+class UserProgressRepository (
 
-    private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
-
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+){
     // Obtener el ID del usuario actual
     internal fun getUserId(): String? {
         return auth.currentUser?.uid
