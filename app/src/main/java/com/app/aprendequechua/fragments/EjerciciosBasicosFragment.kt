@@ -11,6 +11,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 
+
 class EjerciciosBasicosFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
@@ -157,8 +158,8 @@ class EjerciciosBasicosFragment : Fragment() {
     }
 
     private fun irAFragmentoDeLecciones() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, LeccionFragment()) // Asegúrate que sea el ID correcto
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, LeccionFragment())
             .commit()
     }
 }
