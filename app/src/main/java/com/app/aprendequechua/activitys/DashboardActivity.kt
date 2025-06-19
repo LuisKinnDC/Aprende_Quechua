@@ -61,6 +61,9 @@ class DashboardActivity : AppCompatActivity() {
         bottomNavigationView.selectedItemId = R.id.perfilFragment
     }
 
-
+    fun selectGameMenuItem(){
+        val  bottonNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottonNavigationView.selectedItemId = R.id.juegosFragment
+    }
 
 }

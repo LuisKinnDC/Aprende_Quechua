@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.aprendequechua.R
@@ -23,6 +24,7 @@ import java.util.*
 class InicioFragment : Fragment() {
 
     private lateinit var profileImage: de.hdodenhof.circleimageview.CircleImageView
+    private lateinit var cardGame : CardView
 
     private lateinit var sharedViewModel: SharedViewModel
 
@@ -63,6 +65,8 @@ class InicioFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         userProgressRepository = UserProgressRepository()
         profileImage = view.findViewById(R.id.profileImage)
+        cardGame = view.findViewById(R.id.cardGames)
+
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
 
@@ -105,6 +109,25 @@ class InicioFragment : Fragment() {
 
             // Notificar a la actividad para actualizar la barra de navegación
             (activity as? DashboardActivity)?.selectProfileMenuItem()
+        }
+
+        val cardGame = view.findViewById<CardView>(R.id.cardGames)
+        cardGame.setOnClickListener {
+            // Cambiar a JuegosFragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, JuegosFragment())
+                .addToBackStack(null)
+                .commit()
+            // Notificar a la actividad para actualizar la barra de navegación
+            (activity as? DashboardActivity)?.selectGameMenuItem()
+        }
+
+        val cardPronunciation = view.findViewById<CardView>(R.id.cardPronunciation)
+        cardPronunciation.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, PronunciacionFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
 
