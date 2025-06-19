@@ -68,7 +68,7 @@
                         android:layout_height="100dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_level_basic"
-                        android:tint="@color/color_400"/>
+                        app:tint="@color/color_400" />
 
                     <TextView
                         android:layout_width="match_parent"

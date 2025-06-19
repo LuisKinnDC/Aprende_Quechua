@@ -135,7 +135,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Categoría Rompecabezas -->
-            <com.google.android.material.card.MaterialCardView
+           <!-- <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_rompecabezas"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
@@ -213,7 +213,7 @@
 
                     </LinearLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView> -->
 
             <!-- Categoría Memoramas -->
             <com.google.android.material.card.MaterialCardView
