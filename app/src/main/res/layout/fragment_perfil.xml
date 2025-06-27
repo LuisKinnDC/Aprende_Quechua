@@ -344,7 +344,7 @@
                             android:orientation="horizontal"
                             android:layout_marginTop="12dp">
 
-                            <TextView
+                            <!--<TextView
                                 android:id="@+id/txtTitleNivelLeccion"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -352,16 +352,16 @@
                                 android:text="Nivel:"
                                 android:textColor="@color/color_800"
                                 android:textSize="16sp"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold"/>-->
 
-                            <TextView
+                            <!--<TextView
                                 android:id="@+id/txtMostrarNivel"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="end"
                                 android:text="BÁSICO"
-                                android:textColor="@color/color_600"/>
+                                android:textColor="@color/color_600"/>-->
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activitys.SplashActivity"
-    android:background="@color/color_100">
+    android:background="@color/color_200">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -44,10 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="588dp"
+            android:layout_marginTop="620dp"
             android:text="Bienvenido a\nAllin Yachay"
-            android:textSize="28sp"
-            android:textColor="@color/black"
+            android:textColor="@color/color_900"
+            android:textSize="32sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,11 +57,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:text="Aprende Quechua Ayacuchana \nde manera interactiva con\nlecciones, ejercicios y pronunciación"
             android:textSize="18sp"
+            android:textColor="@color/color_800"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.148"
+            app:layout_constraintHorizontal_bias="0.127"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -75,7 +76,7 @@
             android:text="Comenzar!"
             android:textAlignment="center"
             android:textColor="@color/color_50"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

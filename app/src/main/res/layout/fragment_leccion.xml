@@ -46,7 +46,7 @@ tools:context=".fragments.LeccionFragment">
         android:padding="16dp">
 
         <!-- Card de progreso -->
-        <com.google.android.material.card.MaterialCardView
+        <!--<com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -93,7 +93,7 @@ tools:context=".fragments.LeccionFragment">
                     android:layout_marginTop="8dp"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>-->
 
         <!-- Lista de lecciones -->
         <TextView
@@ -104,7 +104,6 @@ tools:context=".fragments.LeccionFragment">
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="12dp"/>
-
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

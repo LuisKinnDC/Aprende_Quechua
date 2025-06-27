@@ -2,98 +2,144 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_inicio_register_login"
+    android:background="@drawable/bg_gradient_app"
     tools:context=".activitys.InicioLoginRegisterActivity">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEntrar"
-        style="@android:style/Widget.Button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="90dp"
-        android:layout_marginEnd="90dp"
-        android:background="@drawable/bg_boton"
-        android:text="Iniciar Sesion"
-        android:textColor="@color/color_50"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnCrear"
-        style="@android:style/Widget.Button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginStart="90dp"
-        android:layout_marginEnd="90dp"
-        android:background="@drawable/bg_boton"
-        android:text="Crear Cuenta"
-        android:textColor="@color/color_50"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnEntrar" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="224dp"
-        android:layout_height="501dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_ic" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-150dp"
-        android:text="ALLIN YACHAY"
-        android:textAlignment="center"
-        android:textColor="@color/color_50"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
+    <!-- Efectos de fondo con tus colores -->
     <ImageView
         android:id="@+id/imgCircle1"
-        android:layout_width="433dp"
-        android:layout_height="425dp"
-        android:layout_marginTop="-200dp"
-        android:layout_marginEnd="150dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="-100dp"
+        android:layout_marginEnd="-100dp"
+        android:alpha="0.15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/circle_efect" />
+        app:srcCompat="@drawable/circle_efect"
+        app:tint="@color/color_50" />
 
     <ImageView
         android:id="@+id/imgCircle2"
-        android:layout_width="433dp"
-        android:layout_height="425dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="-200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="-100dp"
+        android:layout_marginTop="-100dp"
+        android:alpha="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/circle_efect" />
+        app:srcCompat="@drawable/circle_efect"
+        app:tint="@color/color_50" />
 
     <ImageView
         android:id="@+id/imgCircle3"
-        android:layout_width="522dp"
-        android:layout_height="523dp"
-        android:layout_marginBottom="36dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="-150dp"
+        android:alpha="0.1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/circle_efect" />
+        app:srcCompat="@drawable/circle_efect"
+        app:tint="@color/color_900" />
+
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Logo con sombra suave -->
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:elevation="8dp"
+            android:background="@drawable/logo_background"
+            app:srcCompat="@drawable/logo_ic" />
+
+        <!-- Título principal -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="ALLIN YACHAY"
+            android:textColor="@color/color_50"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.03"
+            android:shadowColor="@color/color_900"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
+
+        <!-- Subtítulo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Conecta, aprende, crece"
+            android:textColor="@color/color_100"
+            android:textSize="16sp"
+            android:alpha="0.9"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <!-- Botón de Iniciar Sesión - Estilo outline -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEntrar"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="Iniciar Sesión"
+            android:textColor="@color/color_50"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="28dp"
+            app:strokeColor="@color/color_50"
+            app:strokeWidth="1.5dp"
+            app:rippleColor="@color/color_50_20"/>
+
+        <!-- Botón de Crear Cuenta - Estilo sólido -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCrear"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:backgroundTint="@color/color_50"
+            android:text="Crear Cuenta"
+            android:textColor="@color/color_900"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="28dp"
+            app:rippleColor="@color/color_500_20"/>
+
+    </LinearLayout>
+
+    <!-- Versión de la app -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="v1.0.0"
+        android:textColor="@color/color_100"
+        android:textSize="12sp"
+        android:alpha="0.7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

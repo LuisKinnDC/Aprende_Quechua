@@ -98,11 +98,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="32dp"
                 android:hint="Contraseña"
                 app:endIconMode="password_toggle"
-                app:startIconDrawable="@drawable/ic_pass">
+                app:startIconDrawable="@drawable/ic_password">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTxtContrasena"
@@ -124,14 +124,28 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonIniciarSesion"
+                style="@android:style/Widget.Button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/bg_boton"
+                android:text="Iniciar Sesion"
+                android:textColor="@color/color_50"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginRight="80dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="40dp"
 
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <!-- Línea izquierda -->
@@ -139,7 +153,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1"
-                    android:background="@color/gray" />
+                    android:background="@color/color_500" />
 
                 <!-- Texto central -->
                 <TextView
@@ -148,9 +162,9 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:text="Or Login With"
+                    android:text="O Continua con"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_700"
                     android:textSize="18sp" />
 
                 <!-- Línea derecha -->
@@ -158,7 +172,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1"
-                    android:background="@color/gray" />
+                    android:background="@color/color_500" />
 
             </LinearLayout>
 
@@ -242,19 +256,6 @@
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buttonIniciarSesion"
-                style="@android:style/Widget.Button"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="32dp"
-                android:background="@drawable/bg_boton"
-                android:text="Iniciar Sesion"
-                android:textColor="@color/color_50"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

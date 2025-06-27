@@ -16,6 +16,10 @@
     <color name="color_red_light">#FFEBEE</color>
     <color name="color_red_dark">#C62828</color>
 
+    <color name="color_50_10">#1Af2fbfa</color>
+    <color name="color_50_20">#33f2fbfa</color>
+    <color name="color_500_20">#332c9fa0</color>
+
 
     //Paleta color app
     <color name="color_50">#f2fbfa</color>
