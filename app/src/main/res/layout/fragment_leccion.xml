@@ -19,10 +19,10 @@ tools:context=".fragments.LeccionFragment">
     app:navigationIcon="@drawable/ic_left_clr_900"
     app:titleTextColor="@color/color_950">
 
-    <TextView
+   -- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nivel Básico"
+        android:text="Mis Lecciones"
         android:textColor="@color/color_950"
         android:textSize="20sp"
         android:textStyle="bold"

@@ -24,7 +24,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="16dp">
 
-            <TextView
+            <!--<TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -32,16 +32,7 @@
                 android:textColor="@color/color_950"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_gravity="center_vertical"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1/5"
-                android:textColor="@color/color_600"
-                android:textSize="14sp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"/>
+                android:layout_gravity="center_vertical"/>-->
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
