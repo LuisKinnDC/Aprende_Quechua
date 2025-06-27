@@ -59,10 +59,9 @@ class MemoramasFragment : Fragment() {
             .addOnSuccessListener { result ->
                 val listaOriginal = result.documents.mapNotNull { it.toObject(Carta::class.java) }.shuffled()
                 if (listaOriginal.size >= 5) {
-                    val pares = listaOriginal.take(4) // 4 cartas únicas
-                    val comodin = listaOriginal[4]    // 1 carta impar
+                    val pares = listaOriginal.take(8) // cartas únicas
 
-                    cartas = (pares + pares + listOf(comodin)).shuffled()
+                    cartas = (pares + pares).shuffled() //Duplicamos para obtener 8 pares = 16 cartas
                     configurarGrid()
                     iniciarTemporizador()
                 } else {
@@ -179,7 +178,7 @@ class MemoramasFragment : Fragment() {
                     textView.text = ""
                 }
             }
-        }, 2000) // Mostrar las cartas durante 2 segundos
+        }, 1000) // Mostrar las cartas durante 2 segundos
     }
 
     private fun reiniciarJuego() {
