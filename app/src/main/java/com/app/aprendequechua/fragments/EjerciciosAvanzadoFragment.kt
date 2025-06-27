@@ -11,11 +11,11 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 
-class EjerciciosBasicosFragment : Fragment() {
+class EjerciciosAvanzadoFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var containerEjercicios: LinearLayout
-    private lateinit var idLeccion: String  // Se inicializa dinámicamente
+    private var idLeccion: String? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -31,16 +31,19 @@ class EjerciciosBasicosFragment : Fragment() {
         containerEjercicios = view.findViewById(R.id.containerEjercicios)
         db = FirebaseFirestore.getInstance()
 
-        // ✅ Obtener ID dinámico desde el bundle
-        idLeccion = arguments?.getString("idLeccion") ?: "L01"
+        idLeccion = arguments?.getString("idLeccion")
 
-        cargarEjerciciosDesdeFirestore(idLeccion, inflater)
+        if (idLeccion != null) {
+            cargarEjerciciosDesdeFirestore(idLeccion!!, inflater)
+        } else {
+            Toast.makeText(requireContext(), "ID de lección no recibido", Toast.LENGTH_SHORT).show()
+        }
 
         return view
     }
 
     private fun cargarEjerciciosDesdeFirestore(idLeccion: String, inflater: LayoutInflater) {
-        db.collection("lecciones_basico")
+        db.collection("lecciones_avanzado")
             .document(idLeccion)
             .collection("ejercicios")
             .get()
@@ -92,8 +95,11 @@ class EjerciciosBasicosFragment : Fragment() {
                                 if (selectedId != -1) {
                                     val rbSeleccionado = radioGroup.findViewById<RadioButton>(selectedId)
                                     val texto = rbSeleccionado.text.toString()
-                                    val mensaje = if (texto == correcta) "¡Correcto!" else "Incorrecto"
-                                    Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show()
+                                    if (texto == correcta) {
+                                        Toast.makeText(requireContext(), "¡Correcto!", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(requireContext(), "Incorrecto", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             }
 
@@ -121,14 +127,14 @@ class EjerciciosBasicosFragment : Fragment() {
                 topMargin = 32
             }
             setOnClickListener {
-                finalizarLeccion(idLeccion)
+                finalizarLeccion(idLeccion ?: return@setOnClickListener)
             }
         }
         containerEjercicios.addView(btnFinalizar)
     }
 
     private fun finalizarLeccion(leccionId: String) {
-        val leccionRef = db.collection("lecciones_basico")
+        val leccionRef = db.collection("lecciones_avanzado")
 
         leccionRef.document(leccionId)
             .update("completado", true)
@@ -142,7 +148,7 @@ class EjerciciosBasicosFragment : Fragment() {
                             irAFragmentoDeLecciones()
                         }
                 } else {
-                    Toast.makeText(requireContext(), "¡Has completado todas las lecciones!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "¡Has completado todas las lecciones avanzadas!", Toast.LENGTH_LONG).show()
                     irAFragmentoDeLecciones()
                 }
             }
@@ -157,7 +163,7 @@ class EjerciciosBasicosFragment : Fragment() {
 
     private fun irAFragmentoDeLecciones() {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, LeccionFragment())
+            .replace(R.id.fragmentContainer, LeccionAvanzadoFragment())
             .commit()
     }
 }

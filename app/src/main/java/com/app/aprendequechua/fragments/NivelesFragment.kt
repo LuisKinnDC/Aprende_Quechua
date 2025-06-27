@@ -11,6 +11,7 @@ import com.google.android.material.appbar.MaterialToolbar
 
 class NivelesFragment : Fragment() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -21,6 +22,20 @@ class NivelesFragment : Fragment() {
         btnComenzarBasico.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, LeccionFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+        val btnComenzarIntermedio = view.findViewById<View>(R.id.btn_comenzar_intermedio)
+        btnComenzarIntermedio.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, LeccionIntermedioFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+        val btnComenzarAvanzado = view.findViewById<View>(R.id.btn_comenzar_avanzado)
+        btnComenzarAvanzado.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, LeccionAvanzadoFragment())
                 .addToBackStack(null)
                 .commit()
         }

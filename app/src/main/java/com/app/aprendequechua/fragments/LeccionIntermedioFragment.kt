@@ -11,7 +11,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 
-class LeccionFragment : Fragment() {
+class LeccionIntermedioFragment : Fragment() {
 
     private lateinit var containerLecciones: LinearLayout
     private lateinit var db: FirebaseFirestore
@@ -23,6 +23,7 @@ class LeccionFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_leccion, container, false)
 
+        // Botón de retroceso
         view.findViewById<MaterialToolbar>(R.id.toolbar).setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -36,9 +37,11 @@ class LeccionFragment : Fragment() {
     }
 
     private fun cargarLeccionesDesdeFirestore(inflater: LayoutInflater) {
-        db.collection("lecciones_basico").get()
+        db.collection("lecciones_intermedio")
+            .get()
             .addOnSuccessListener { documentos ->
                 for (doc in documentos) {
+                    val idLeccion = doc.id
                     val titulo = doc.getString("titulo") ?: "Sin título"
                     val descripcion = doc.getString("descripcion") ?: "Sin descripción"
                     val icono = doc.getString("icono") ?: "ic_lesson"
@@ -48,15 +51,15 @@ class LeccionFragment : Fragment() {
 
                     val txtTitulo = itemView.findViewById<TextView>(R.id.txtTituloLeccion)
                     val txtDescripcion = itemView.findViewById<TextView>(R.id.txtDescripcionLeccion)
-                    val imgIconoLeccion = itemView.findViewById<ImageView>(R.id.imgIconoLeccion)
+                    val imgIcono = itemView.findViewById<ImageView>(R.id.imgIconoLeccion)
                     val imgEstado = itemView.findViewById<ImageView>(R.id.imgEstadoLeccion)
                     val btnPracticar = itemView.findViewById<MaterialButton>(R.id.btnPracticar)
 
                     txtTitulo.text = titulo
                     txtDescripcion.text = descripcion
 
-                    val iconResId = resources.getIdentifier(icono, "drawable", requireContext().packageName)
-                    imgIconoLeccion.setImageResource(if (iconResId != 0) iconResId else R.drawable.ic_lesson_1)
+                    val resId = resources.getIdentifier(icono, "drawable", requireContext().packageName)
+                    imgIcono.setImageResource(if (resId != 0) resId else R.drawable.ic_lesson_1)
 
                     if (completado) {
                         imgEstado.setImageResource(R.drawable.ic_check_circle)
@@ -75,10 +78,11 @@ class LeccionFragment : Fragment() {
                     }
 
                     btnPracticar.setOnClickListener {
-                        val fragment = EjerciciosBasicosFragment()
-                        val bundle = Bundle()
-                        bundle.putString("idLeccion", doc.id) // 🔁 ID dinámico
-                        fragment.arguments = bundle
+                        val fragment = EjerciciosIntermediosFragment().apply {
+                            arguments = Bundle().apply {
+                                putString("idLeccion", idLeccion)
+                            }
+                        }
 
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainer, fragment)
