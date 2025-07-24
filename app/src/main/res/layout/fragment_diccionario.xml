@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:src="@drawable/ic_favorite_white"
+        android:src="@drawable/ic_star_filled"
         app:backgroundTint="@color/color_600"
         app:tint="@color/white"/>
 </FrameLayout>

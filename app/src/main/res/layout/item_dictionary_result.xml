@@ -89,14 +89,14 @@
 
                 <ImageButton
                     android:id="@+id/btnUrl_pronunciacion"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Escuchar pronunciación"
                     android:src="@drawable/ic_audio"
-                    android:padding="12dp"
+                    android:padding="6dp"
+                    android:scaleType="fitCenter"
                     app:tint="@color/color_600" />
-
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -104,12 +104,13 @@
 
                 <ImageButton
                     android:id="@+id/ImgBtnFav"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Marcar como favorito"
                     android:src="@drawable/ic_star_outline"
-                    android:padding="12dp"
+                    android:padding="6dp"
+                    android:scaleType="fitCenter"
                     app:tint="@color/color_600" />
             </LinearLayout>
         </LinearLayout>

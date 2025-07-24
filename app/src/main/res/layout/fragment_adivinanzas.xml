@@ -60,11 +60,13 @@
                         <!-- Botón de pista -->
                         <ImageButton
                             android:id="@+id/btnHint"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@drawable/ic_lightbulb_outline"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="Mostrar pista"
+                            android:scaleType="centerInside"
+                            android:padding="8dp"
                             app:tint="@color/color_600" />
                     </LinearLayout>
 
