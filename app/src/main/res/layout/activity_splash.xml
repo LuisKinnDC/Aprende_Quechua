@@ -1,87 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activitys.SplashActivity"
-    android:background="@color/color_200">
+    android:background="@drawable/bg_gradient_dark"
+    tools:context=".SplashActivity">
+
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="135dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        app:srcCompat="@drawable/bg_men_women" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/mainImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_men_women"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.9"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.179" />
+
+    <View
+        android:id="@+id/overlayGradient"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/half_gradient_overlay"
+        app:layout_constraintBottom_toBottomOf="@id/mainImage"
+        app:layout_constraintEnd_toEndOf="@id/mainImage"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintStart_toStartOf="@id/mainImage"
+        app:layout_constraintTop_toBottomOf="@id/mainImage"/>
 
 
-        <ImageView
-            android:id="@+id/imageView"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintBottom_toBottomOf="@id/overlayGradient"
+        app:layout_constraintEnd_toEndOf="@id/overlayGradient"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/overlayGradient"
+        app:layout_constraintTop_toTopOf="@id/overlayGradient"
+        app:layout_constraintVertical_bias="0.0">
+
+        <!-- Nombre de la app con efecto neón -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/bg_splash" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="620dp"
-            android:text="Bienvenido a\nAllin Yachay"
-            android:textColor="@color/color_900"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="16dp"
-            android:text="Aprende Quechua Ayacuchana \nde manera interactiva con\nlecciones, ejercicios y pronunciación"
-            android:textSize="18sp"
-            android:textColor="@color/color_800"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.127"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-        <TextView
-            android:id="@+id/txtIniciarAhora"
-            android:layout_width="175dp"
-            android:layout_height="60dp"
-            android:background="@drawable/btn_iniciar_ahora"
-            android:paddingLeft="14dp"
-            android:paddingTop="16dp"
-            android:text="Comenzar!"
-            android:textAlignment="center"
+            android:letterSpacing="0.05"
+            android:shadowColor="@color/color_100"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="12"
+            android:text="ALLIN YACHAY"
             android:textColor="@color/color_50"
-            android:textSize="26sp"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <!-- Descripción con tipografía moderna -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.95"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.3"
+            android:text="Aprende Quechua Ayacuchana de manera interactiva con lecciones, ejercicios y pronunciación"
+            android:textColor="@color/color_100"
+            android:textSize="18sp" />
+
+        <!-- Botón flotante con efecto 3D -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/txtIniciarAhora"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/color_400"
+            android:elevation="8dp"
+            android:letterSpacing="0.03"
+            android:text="COMENZAR AHORA"
+            android:textColor="@color/color_50"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:cornerRadius="30dp"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconGravity="textStart"
+            app:iconSize="24dp"
+            app:iconTint="@color/color_50"
+            app:rippleColor="@color/color_200" />
+    </LinearLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
