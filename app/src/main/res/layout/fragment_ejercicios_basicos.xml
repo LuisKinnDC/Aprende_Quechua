@@ -16,6 +16,7 @@
         android:background="@color/color_100"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_left_clr_900"
+        android:layout_marginTop="20dp"
         app:titleTextColor="@color/color_950">
 
         <LinearLayout

@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Aprende Pronunciación Quechua"
+        android:layout_marginTop="24dp"
         android:textSize="24sp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -41,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="14dp"
         android:gravity="center_vertical">
 
         <ImageButton
@@ -72,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:gravity="center">
 
         <TextView

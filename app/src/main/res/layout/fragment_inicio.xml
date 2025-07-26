@@ -22,6 +22,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:orientation="horizontal">
                 <!-- User Info -->
                 <LinearLayout
@@ -52,6 +53,7 @@
                     android:id="@+id/profileImage"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
+
                     android:src="@drawable/ic_defect_profile"
                     android:contentDescription="Foto de perfil"
                     android:clickable="true"
@@ -82,7 +84,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:orientation="horizontal">
                         <TextView
                             android:id="@+id/contadorProgeso"
@@ -97,7 +98,6 @@
                         android:id="@+id/progresoDiario"
                         android:layout_width="match_parent"
                         android:layout_height="8dp"
-                        android:layout_marginTop="8dp"
                         android:progress="0"
                         app:indicatorColor="@color/color_600"
                         app:trackColor="@color/color_200"/>
