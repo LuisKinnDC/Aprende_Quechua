@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "213829955142-hj4a59pfn7n0v7gvjtjtrkoas5944en0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.aprendequechua",
+            "certificate_hash": "7114efef1fb1cc18f837ebd179b9b4fced1dbbaa"
+          }
+        },
+        {
           "client_id": "213829955142-obc6bc7mlek1177ka5o1pd77ba5ah9ie.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
